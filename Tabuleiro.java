@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Tabuleiro {
     private final Pokemon[][] tabuleiro;
-    public final int tamanho;
+    private final int tamanho;
 
     public Tabuleiro(int tamanho) {
         this.tamanho = tamanho;
@@ -70,6 +70,7 @@ public class Tabuleiro {
                 }
             }
         }
+
         return lista;
     }
 
@@ -81,6 +82,7 @@ public class Tabuleiro {
                 }
             }
         }
+
         return new int[]{-1, -1};
     }
 
@@ -94,6 +96,10 @@ public class Tabuleiro {
         }
 
         return null;
+    }
+
+    public int getTamanho() {
+        return tamanho;
     }
 }
 

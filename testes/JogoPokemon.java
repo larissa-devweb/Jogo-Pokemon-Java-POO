@@ -92,7 +92,7 @@ public class JogoPokemon {
                             System.out.print("Digite a linha (0 a 5): ");
                             int linha = scanner.nextInt();
                             boolean achou = false;
-                            for (int j = 0; j < tabuleiro.tamanho; j++) {
+                            for (int j = 0; j < tabuleiro.getTamanho(); j++) {
                                 Pokemon p = tabuleiro.getPokemon(linha, j);
                                 if (p != null && p.isSelvagem()) {
                                     achou = true;
@@ -104,7 +104,7 @@ public class JogoPokemon {
                             System.out.print("Digite a coluna (0 a 5): ");
                             int coluna = scanner.nextInt();
                             boolean achou = false;
-                            for (int i = 0; i < tabuleiro.tamanho; i++) {
+                            for (int i = 0; i < tabuleiro.getTamanho(); i++) {
                                 Pokemon p = tabuleiro.getPokemon(i, coluna);
                                 if (p != null && p.isSelvagem()) {
                                     achou = true;

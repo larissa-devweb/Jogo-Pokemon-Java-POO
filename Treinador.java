@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class Treinador {
     private final String nome;
     private final ArrayList<Pokemon> mochila; // Lista de Pokémon capturados
+    private int linha;
+    private int coluna;
 
     // Construtor do treinador, já inicializa a mochila vazia
     public Treinador(String nome) {
@@ -55,5 +57,21 @@ public class Treinador {
 
     Iterable<Pokemon> getPokemon() {
         throw new UnsupportedOperationException("Nao suportado.");
+    }
+
+    public int getLinha() {
+        return linha;
+    }
+
+    public void setLinha(int linha) {
+        this.linha = linha;
+    }
+
+    public int getColuna() {
+        return coluna;
+    }
+
+    public void setColuna(int coluna) {
+        this.coluna = coluna;
     }
 }

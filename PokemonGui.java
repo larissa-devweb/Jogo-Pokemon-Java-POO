@@ -8,8 +8,6 @@ public class PokemonGui extends JFrame {
     private final JButton[][] botoes;
     private final Tabuleiro tabuleiro;
     private final Treinador treinador;
-    private int treinadorLinha = 0;
-    private int treinadorColuna = 0;
 
     public PokemonGui(Tabuleiro tabuleiro, Treinador treinador) {
         super("Pokémon GUI Básico");
@@ -17,7 +15,7 @@ public class PokemonGui extends JFrame {
         this.tabuleiro = tabuleiro;
         this.treinador = treinador;
 
-        int tamanho = tabuleiro.tamanho;
+        int tamanho = tabuleiro.getTamanho();
         botoes = new JButton[tamanho][tamanho];
 
         setLayout(new GridLayout(tamanho, tamanho));
@@ -43,8 +41,8 @@ public class PokemonGui extends JFrame {
     }
 
     private void moverTreinador(int novaLinha, int novaColuna) {
-        treinadorLinha = novaLinha;
-        treinadorColuna = novaColuna;
+        treinador.setLinha(novaLinha);
+        treinador.setColuna(novaColuna);
 
         Pokemon p = tabuleiro.getPokemon(novaLinha, novaColuna);
 
@@ -72,10 +70,10 @@ public class PokemonGui extends JFrame {
     }
 
     public void atualizarTabuleiro() {
-        for (int linha = 0; linha < tabuleiro.tamanho; linha++) {
-            for (int coluna = 0; coluna < tabuleiro.tamanho; coluna++) {
-                if (linha == treinadorLinha && coluna == treinadorColuna) {
-                    botoes[linha][coluna].setText("Treinador");
+        for (int linha = 0; linha < tabuleiro.getTamanho(); linha++) {
+            for (int coluna = 0; coluna < tabuleiro.getTamanho(); coluna++) {
+                if (linha == treinador.getLinha() && coluna == treinador.getColuna()) {
+                    botoes[linha][coluna].setText(treinador.getNome());
                 } else {
                     Pokemon p = tabuleiro.getPokemon(linha, coluna);
                     if (p != null) {
