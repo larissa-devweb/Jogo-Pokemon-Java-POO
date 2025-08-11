@@ -22,7 +22,6 @@ public class PokemonGUI extends JFrame {
 
         setLayout(new GridLayout(tamanho, tamanho));
 
-        // cria botões para cada célula
         for (int linha = 0; linha < tamanho; linha++) {
             for (int coluna = 0; coluna < tamanho; coluna++) {
                 JButton botao = new JButton();
@@ -44,7 +43,7 @@ public class PokemonGUI extends JFrame {
         setVisible(true);
     }
 
-    private void moverTreinador(int novaLinha, int novaColuna) throws RegiaoInvalidaException {
+    private void moverTreinador(int novaLinha, int novaColuna) {
         treinadorLinha = novaLinha;
         treinadorColuna = novaColuna;
 
@@ -73,7 +72,7 @@ public class PokemonGUI extends JFrame {
         atualizarTabuleiro();
     }
 
-    private void atualizarTabuleiro() {
+    public void atualizarTabuleiro() {
         for (int linha = 0; linha < tabuleiro.tamanho; linha++) {
             for (int coluna = 0; coluna < tabuleiro.tamanho; coluna++) {
                 if (linha == treinadorLinha && coluna == treinadorColuna) {
@@ -102,6 +101,11 @@ public class PokemonGUI extends JFrame {
                     "Erro ao posicionar Pokémon: " + e.getMessage());
         }
 
-        new PokemonGUI(tab, ash);
+        // Cria GUI
+        PokemonGUI gui = new PokemonGUI(tab, ash);
+
+        // Inicia thread de movimento automático
+        MovimentoAutomatico movimento = new MovimentoAutomatico(tab, gui);
+        movimento.start();
     }
 }
