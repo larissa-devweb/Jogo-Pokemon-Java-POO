@@ -1,6 +1,7 @@
 package jogopokemon.testes;
 
 import jogopokemon.*;
+import jogopokemon.janelas.JanelaJogo;
 import jogopokemon.pokemons.Pokemon;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
@@ -17,7 +18,7 @@ public class JogoPokemon {
         // Cria tabuleiro e treinador
         Tabuleiro tabuleiro = new Tabuleiro(6);
         Treinador treinadorJogador = new Treinador("Ash");
-        PokemonGui pokemonGui = new PokemonGui(tabuleiro, treinadorJogador);
+        JanelaJogo janelaJogo = new JanelaJogo(tabuleiro, treinadorJogador);
 
         int dicasRestantes = 3; // máximo de dicas
         boolean jogoAtivo = true;
@@ -28,7 +29,7 @@ public class JogoPokemon {
         tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"), true);
 
         // Inicia thread para movimentar Pokémon automaticamente
-        MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, pokemonGui);
+        MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, janelaJogo);
         threadMovimento.start();
 
         // Loop principal do jogo

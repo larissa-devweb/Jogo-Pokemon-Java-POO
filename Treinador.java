@@ -5,7 +5,6 @@
 package jogopokemon;
 
 import jogopokemon.pokemons.Pokemon;
-
 import java.util.ArrayList;
 
 // Classe que representa o treinador (jogador)

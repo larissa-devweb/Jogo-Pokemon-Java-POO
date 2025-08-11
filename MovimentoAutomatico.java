@@ -4,6 +4,7 @@
  */
 package jogopokemon;
 
+import jogopokemon.janelas.JanelaJogo;
 import jogopokemon.pokemons.Pokemon;
 
 /**
@@ -15,9 +16,9 @@ Funciona paralelo ao que o jogador estiver fazendo
 
 public class MovimentoAutomatico extends Thread {
     private final Tabuleiro tabuleiro;
-    private final PokemonGui gui; // referência para atualizar a interface
+    private final JanelaJogo gui; // referência para atualizar a interface
 
-    public MovimentoAutomatico(Tabuleiro tabuleiro, PokemonGui gui) {
+    public MovimentoAutomatico(Tabuleiro tabuleiro, JanelaJogo gui) {
         this.tabuleiro = tabuleiro;
         this.gui = gui;
     }
