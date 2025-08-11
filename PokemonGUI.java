@@ -1,3 +1,5 @@
+package jogopokemon;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,10 +28,10 @@ public class PokemonGUI extends JFrame {
                 JButton botao = new JButton();
                 botoes[linha][coluna] = botao;
 
-                final int l = linha;
-                final int c = coluna;
+                final int linhaSelecionada = linha;
+                final int colunaSelecionada = coluna;
 
-                botao.addActionListener(e -> moverTreinador(l, c));
+                botao.addActionListener(e -> moverTreinador(linhaSelecionada, colunaSelecionada));
 
                 add(botao);
             }
@@ -42,7 +44,7 @@ public class PokemonGUI extends JFrame {
         setVisible(true);
     }
 
-    private void moverTreinador(int novaLinha, int novaColuna) {
+    private void moverTreinador(int novaLinha, int novaColuna) throws RegiaoInvalidaException {
         treinadorLinha = novaLinha;
         treinadorColuna = novaColuna;
 
@@ -54,9 +56,14 @@ public class PokemonGUI extends JFrame {
             );
 
             if (capturado) {
-                tabuleiro.removerPokemon(novaLinha, novaColuna);
-                JOptionPane.showMessageDialog(this,
-                        p.getNome() + " foi capturado!");
+                try {
+                    tabuleiro.removerPokemon(novaLinha, novaColuna);
+                    JOptionPane.showMessageDialog(this,
+                            p.getNome() + " foi capturado!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao remover Pokémon: " + e.getMessage());
+                }
             } else {
                 JOptionPane.showMessageDialog(this,
                         p.getNome() + " escapou!");
@@ -84,7 +91,6 @@ public class PokemonGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        // exemplo de uso
         Tabuleiro tab = new Tabuleiro(5);
         Treinador ash = new Treinador("Ash");
 
@@ -92,7 +98,8 @@ public class PokemonGUI extends JFrame {
             tab.posicionarPokemon(2, 2, new PokemonAgua("Squirtle"), true);
             tab.posicionarPokemon(4, 1, new PokemonEletrico("Pikachu"), true);
         } catch (RegiaoInvalidaException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao posicionar Pokémon: " + e.getMessage());
         }
 
         new PokemonGUI(tab, ash);
