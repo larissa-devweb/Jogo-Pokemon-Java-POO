@@ -9,6 +9,7 @@ package jogopokemon;
  * //AQUI FICA salvar e carregar os dados do jogo (partida, pokémons, treinadores e etc
  *
  */
+import jogopokemon.pokemons.*;
 import java.io.*;
 import java.util.Scanner;
 
@@ -79,13 +80,13 @@ public class GerenciadorArquivos {
     private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
         switch (tipo) {
             case "agua":
-                return new PokemonAgua(nome);
+                return new Agua(nome);
             case "terra":
-                return new PokemonTerra(nome);
+                return new Terra(nome);
             case "floresta":
-                return new PokemonFloresta(nome);
+                return new Floresta(nome);
             case "eletrico":
-                return new PokemonEletrico(nome);
+                return new Eletrico(nome);
             default:
                 System.out.println("Tipo desconhecido: " + tipo);
                 return null;

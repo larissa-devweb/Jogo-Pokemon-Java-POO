@@ -4,6 +4,8 @@
  */
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
+
 import java.util.Scanner;
 
 // Classe que executa a batalha entre dois Pokémons

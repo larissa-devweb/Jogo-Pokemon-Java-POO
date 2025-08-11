@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jogopokemon;
+import jogopokemon.pokemons.Pokemon;
+
 import java.util.ArrayList;
 
 public class Tabuleiro {
-    private Pokemon[][] tabuleiro;
+    private final Pokemon[][] tabuleiro;
     public final int tamanho;
 
     public Tabuleiro(int tamanho) {
@@ -15,7 +17,7 @@ public class Tabuleiro {
     }
 
     // Posiciona um Pokémon se a posição estiver livre e válida
-    public void posicionarPokemon(int linha, int coluna, Pokemon pokemon, boolean selvagem) throws RegiaoInvalidaException {
+    public void posicionarPokemon(int linha, int coluna, Pokemon pokemon, boolean selvagem) {
         if (!posicaoValida(linha, coluna)) {
             throw new RegiaoInvalidaException("Posição fora dos limites do tabuleiro.");
         }
@@ -53,6 +55,7 @@ public class Tabuleiro {
                     System.out.print("[" + tabuleiro[i][j].getNome().charAt(0) + "] ");
                 }
             }
+
             System.out.println();
         }
     }
@@ -81,15 +84,16 @@ public class Tabuleiro {
         return new int[]{-1, -1};
     }
 
-    void mostrarTabuleiro(boolean debug) {
+    public void mostrarTabuleiro(boolean debug) {
         throw new UnsupportedOperationException("Nao suportado."); 
     }
 
-public Pokemon getPokemon(int linha, int coluna) {
-    if (posicaoValida(linha, coluna)) {
-        return tabuleiro[linha][coluna];
+    public Pokemon getPokemon(int linha, int coluna) {
+        if (posicaoValida(linha, coluna)) {
+            return tabuleiro[linha][coluna];
+        }
+
+        return null;
     }
-    return null;
-}
 }
 

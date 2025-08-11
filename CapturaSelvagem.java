@@ -4,14 +4,15 @@
  */
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import java.util.Random;
 
 // Classe que cuida da lógica de capturar um Pokémon selvagem
 public class CapturaSelvagem {
 
-    // Tenta capturar um Pokémon, informando sua posição atual no tabuleiro
-    public static boolean tentarCaptura(Pokemon pokemonAlvo, Tabuleiro tabuleiro, int linhaAtual, 
-            int colunaAtual, Treinador treinador) throws RegiaoInvalidaException {
+    // Tenta capturar um Pokémon, informando a sua posição atual no tabuleiro
+    public static boolean tentarCaptura(Pokemon pokemonAlvo, Tabuleiro tabuleiro, int linhaAtual,
+                                        int colunaAtual, Treinador treinador) {
         
         // Se o Pokémon já foi capturado antes, não faz sentido tentar capturar de novo
         if (!pokemonAlvo.isSelvagem()) {
@@ -50,6 +51,7 @@ public class CapturaSelvagem {
 
                     tabuleiro.removerPokemon(linhaAtual, colunaAtual); // limpa a célula antiga
                     tabuleiro.posicionarPokemon(novaLinha, novaColuna, pokemonAlvo, true); // reposiciona
+
                     System.out.println(pokemonAlvo.getNome() + " fugiu para [" + novaLinha + "," + novaColuna + "].");
                     conseguiuMover = true;
                     break; // para de tentar depois da primeira posição válida

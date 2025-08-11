@@ -4,19 +4,20 @@
  */
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
+
 /**
 O que a Thread vai fazer
 
  A cada 3 segundos, um Pokémon selvagem do tabuleiro vai tentar se mover para uma célula vizinha livre.
 Funciona paralelo ao que o jogador estiver fazendo
  */
-package jogopokemon;
 
 public class MovimentoAutomatico extends Thread {
     private final Tabuleiro tabuleiro;
-    private final PokemonGUI gui; // referência para atualizar a interface
+    private final PokemonGui gui; // referência para atualizar a interface
 
-    public MovimentoAutomatico(Tabuleiro tabuleiro, PokemonGUI gui) {
+    public MovimentoAutomatico(Tabuleiro tabuleiro, PokemonGui gui) {
         this.tabuleiro = tabuleiro;
         this.gui = gui;
     }

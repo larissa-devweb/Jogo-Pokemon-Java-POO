@@ -5,7 +5,7 @@
 package jogopokemon;
 
 // Define uma exceção personalizada para tratar posicionamento inválido
-public class RegiaoInvalidaException extends Exception {
+public class RegiaoInvalidaException extends RuntimeException {
 
     // Construtor da exceção que recebe uma mensagem e repassa para a superclasse
     public RegiaoInvalidaException(String mensagem) {

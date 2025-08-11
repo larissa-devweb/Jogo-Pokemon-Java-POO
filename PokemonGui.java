@@ -1,17 +1,17 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import javax.swing.*;
 import java.awt.*;
 
-public class PokemonGUI extends JFrame {
-
+public class PokemonGui extends JFrame {
     private final JButton[][] botoes;
     private final Tabuleiro tabuleiro;
     private final Treinador treinador;
     private int treinadorLinha = 0;
     private int treinadorColuna = 0;
 
-    public PokemonGUI(Tabuleiro tabuleiro, Treinador treinador) {
+    public PokemonGui(Tabuleiro tabuleiro, Treinador treinador) {
         super("Pokémon GUI Básico");
 
         this.tabuleiro = tabuleiro;
@@ -30,8 +30,7 @@ public class PokemonGUI extends JFrame {
                 final int linhaSelecionada = linha;
                 final int colunaSelecionada = coluna;
 
-                botao.addActionListener(e -> moverTreinador(linhaSelecionada, colunaSelecionada));
-
+                botao.addActionListener(_ -> moverTreinador(linhaSelecionada, colunaSelecionada));
                 add(botao);
             }
         }
@@ -87,25 +86,5 @@ public class PokemonGUI extends JFrame {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Tabuleiro tab = new Tabuleiro(5);
-        Treinador ash = new Treinador("Ash");
-
-        try {
-            tab.posicionarPokemon(2, 2, new PokemonAgua("Squirtle"), true);
-            tab.posicionarPokemon(4, 1, new PokemonEletrico("Pikachu"), true);
-        } catch (RegiaoInvalidaException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Erro ao posicionar Pokémon: " + e.getMessage());
-        }
-
-        // Cria GUI
-        PokemonGUI gui = new PokemonGUI(tab, ash);
-
-        // Inicia thread de movimento automático
-        MovimentoAutomatico movimento = new MovimentoAutomatico(tab, gui);
-        movimento.start();
     }
 }
