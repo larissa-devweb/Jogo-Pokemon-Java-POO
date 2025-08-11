@@ -10,11 +10,15 @@ O que a Thread vai fazer
  A cada 3 segundos, um Pokémon selvagem do tabuleiro vai tentar se mover para uma célula vizinha livre.
 Funciona paralelo ao que o jogador estiver fazendo
  */
+package jogopokemon;
+
 public class MovimentoAutomatico extends Thread {
     private final Tabuleiro tabuleiro;
+    private final PokemonGUI gui; // referência para atualizar a interface
 
-    public MovimentoAutomatico(Tabuleiro tabuleiro) {
+    public MovimentoAutomatico(Tabuleiro tabuleiro, PokemonGUI gui) {
         this.tabuleiro = tabuleiro;
+        this.gui = gui;
     }
 
     @Override
@@ -26,18 +30,15 @@ public class MovimentoAutomatico extends Thread {
                 e.printStackTrace();
             }
 
-            // escolhe posição aleatória
             int linha = (int) (Math.random() * tabuleiro.tamanho);
             int coluna = (int) (Math.random() * tabuleiro.tamanho);
 
             Pokemon p = tabuleiro.getPokemon(linha, coluna);
 
-            // só move se for Pokémon selvagem
             if (p != null && p.isSelvagem()) {
-                int novaLinha = linha + (int) (Math.random() * 3) - 1; // -1, 0 ou +1
+                int novaLinha = linha + (int) (Math.random() * 3) - 1;
                 int novaColuna = coluna + (int) (Math.random() * 3) - 1;
 
-                // mantém dentro dos limites do tabuleiro
                 if (novaLinha >= 0 && novaLinha < tabuleiro.tamanho &&
                     novaColuna >= 0 && novaColuna < tabuleiro.tamanho &&
                     tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
@@ -46,8 +47,9 @@ public class MovimentoAutomatico extends Thread {
                     try {
                         tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, true);
                         System.out.println(p.getNome() + " se moveu para [" + novaLinha + "," + novaColuna + "]");
+                        gui.atualizarTabuleiro(); // atualiza interface
                     } catch (RegiaoInvalidaException e) {
-                        // se for região errada, não move
+                        // se for região errada, ignora
                     }
                 }
             }
