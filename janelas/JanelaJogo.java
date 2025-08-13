@@ -31,7 +31,7 @@ public class JanelaJogo extends JFrame {
                 final int linhaSelecionada = linha;
                 final int colunaSelecionada = coluna;
 
-                botao.addActionListener(_ -> moverTreinador(linhaSelecionada, colunaSelecionada));
+                botao.addActionListener(e -> moverTreinador(linhaSelecionada, colunaSelecionada));
                 add(botao);
             }
         }

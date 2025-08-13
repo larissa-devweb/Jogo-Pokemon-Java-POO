@@ -22,21 +22,21 @@ public class JanelaInicial extends JFrame {
 
         JButton botao = new JButton("Carregar jogo salvo");
         botao.setPreferredSize(new Dimension(250, 30));
-        botao.addActionListener(_ -> abrirJogo());
+        botao.addActionListener(e -> abrirJogo());
 
         constraints.gridy = 1;
         add(botao, constraints);
 
         botao = new JButton("Posicionar time Pokémon");
         botao.setPreferredSize(new Dimension(250, 30));
-        botao.addActionListener(_ -> abrirJogo());
+        botao.addActionListener(e -> abrirJogo());
 
         constraints.gridy = 2;
         add(botao, constraints);
 
         botao = new JButton("Distribuir Pokémons aleatoriamente");
         botao.setPreferredSize(new Dimension(250, 30));
-        botao.addActionListener(_ -> abrirJogo());
+        botao.addActionListener(e -> abrirJogo());
 
         constraints.gridy = 3;
         add(botao, constraints);
