@@ -45,10 +45,8 @@ public class GerenciadorArquivos {
                     String nome = partes[0];
                     String tipo = partes[1].toLowerCase();
                     Pokemon p = criarPokemonPorTipo(tipo, nome);
-                    if (p != null) {
-                        p.setSelvagem(false);
-                        treinador.adicionarPokemon(p);
-                    }
+                    // p.setSelvagem(false);
+                    if (p != null) treinador.adicionarPokemon(p);
                 }
             }
             System.out.println("Mochila carregada com sucesso.");

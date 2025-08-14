@@ -12,16 +12,11 @@ public class Eletrico extends Pokemon {
     public Eletrico(String nome) {
         super(nome,"eletrico");
     }
-
     @Override
     public int calcularDano() {
+        // Polimorfismo: elétrico tem mais variação de dano
         Random rand = new Random();
-        paralisou = rand.nextInt(100) < 25; // 25% de chance de paralisar
-        int forca = 0;
-        return (forca + rand.nextInt(nivel + 1));
-    }
-
-    public boolean paralisouAdversario() {
-        return paralisou;
+        int variacao = rand.nextInt(8); // até +7
+        return ataque + nivel + variacao;
     }
 }

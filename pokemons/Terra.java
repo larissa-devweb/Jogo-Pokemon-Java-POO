@@ -11,15 +11,11 @@ public class Terra extends Pokemon {
         super(nome,"Terra");
     }
 
-    
     @Override
     public int calcularDano() {
+        // Polimorfismo: Terra foca mais em defesa, ataque menos explosivo
         Random rand = new Random();
-        int forca = 0;
-        int dano = (forca + rand.nextInt(nivel + 1));
-        if ((nivel + experiencia) % 2 != 0) {
-            dano *= 2; // turno ímpar = força dobrada
-        }
-        return dano;
+        int variacao = rand.nextInt(3); // até +2
+        return ataque + (nivel / 2) + variacao;
     }
 }

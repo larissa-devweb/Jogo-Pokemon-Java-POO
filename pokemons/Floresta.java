@@ -15,11 +15,10 @@ public class Floresta extends Pokemon {
 
     @Override
     public int calcularDano() {
+        // Polimorfismo: ataque com chance de golpe crítico
         Random rand = new Random();
-        int forca = 0;
-        int dano = (forca + rand.nextInt(nivel + 1));
-        this.energia += 5; // regenera vida ao atacar
-        if (this.energia > 100) this.energia = 100;
-        return dano;
+        boolean critico = rand.nextInt(10) < 2; // 20% de chance
+        int base = ataque + nivel;
+        return critico ? base * 2 : base;
     }
 }

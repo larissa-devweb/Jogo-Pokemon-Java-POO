@@ -4,18 +4,21 @@
  */
 package jogopokemon.pokemons;
 
+
 import java.util.Random;
 
 public class Agua extends Pokemon {
     public Agua(String nome) {
-     // Chama o construtor (nome, tipo) da classe base
-        super(nome, "Agua");
+        // super() chama o construtor da classe mãe
+        // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem=true, tipo="Água"
+        super(nome, 8, 5, 1, 100, true, "Água");
     }
     @Override
     public int calcularDano() {
+        // Polimorfismo: cálculo diferente para tipo Água
+        // Tipo água tem ataque mais constante
         Random rand = new Random();
-        int forca = 0;
-        int danoBase = (forca + rand.nextInt(nivel + 1));
-        return danoBase; // redução de dano será tratada na defesa
+        int variacao = rand.nextInt(5); // até +4
+        return ataque + nivel + variacao;
     }
 }
