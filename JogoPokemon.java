@@ -1,14 +1,13 @@
 package jogopokemon;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Random;
 
 public class JogoPokemon {
 
     public static void main(String[] args) throws RegiaoInvalidaException {
 
         // Cria tabuleiro e treinador
-        try (Scanner scanner = new Scanner(System.in)) {
             // Cria tabuleiro e treinador
             Tabuleiro tabuleiro = new Tabuleiro(6);
             Treinador treinadorJogador = new Treinador("Ash");
@@ -39,7 +38,8 @@ public class JogoPokemon {
                 System.out.println("9 - Salvar tabuleiro");
                 System.out.println("10 - Sair");
                 System.out.print("Opção: ");
-                
+
+                Random scanner;
                 int opcao = scanner.nextInt();
                 
                 switch (opcao) {
