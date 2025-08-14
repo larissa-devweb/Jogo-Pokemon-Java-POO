@@ -77,18 +77,15 @@ public class GerenciadorArquivos {
 
     // Método utilitário para criar Pokémon com base no tipo (usado no carregamento)
     private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
-        switch (tipo) {
-            case "agua":
-                return new Agua(nome);
-            case "terra":
-                return new Terra(nome);
-            case "floresta":
-                return new Floresta(nome);
-            case "eletrico":
-                return new Eletrico(nome);
-            default:
+        return switch (tipo) {
+            case "agua" -> new Agua(nome);
+            case "terra" -> new Terra(nome);
+            case "floresta" -> new Floresta(nome);
+            case "eletrico" -> new Eletrico(nome);
+            default -> {
                 System.out.println("Tipo desconhecido: " + tipo);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 }

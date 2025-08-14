@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jogopokemon;
-import jogopokemon.pokemons.Pokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import java.util.ArrayList;
 
 public class Tabuleiro {
@@ -29,6 +29,17 @@ public class Tabuleiro {
 
         pokemon.setSelvagem(selvagem);
         tabuleiro[linha][coluna] = pokemon;
+    }
+
+    public void posicionarPokemonAleatoriamente(Pokemon pokemon, boolean selvagem) {
+        int linha = (int) (Math.random() * tamanho) - 1;
+        int coluna = (int) (Math.random() * tamanho) - 1;
+
+        if (posicaoValida(linha, coluna) && tabuleiro[linha][coluna] == null) {
+            pokemon.setSelvagem(selvagem);
+            tabuleiro[linha][coluna] = pokemon;
+        } else
+            posicionarPokemonAleatoriamente(pokemon, selvagem);
     }
 
     public void removerPokemon(int linha, int coluna) {

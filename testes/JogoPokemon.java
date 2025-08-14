@@ -6,7 +6,6 @@ import jogopokemon.pokemons.Pokemon;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
