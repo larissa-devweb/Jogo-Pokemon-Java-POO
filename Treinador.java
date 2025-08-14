@@ -1,76 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon;
 
-import jogopokemon.pokemons.Pokemon;
 import java.util.ArrayList;
 
-// Classe que representa o treinador (jogador)
+// Classe que representa o treinador
 public class Treinador {
-    private final String nome;
-    private final ArrayList<Pokemon> mochila; // Lista de Pokémon capturados
-    private int linha;
-    private int coluna;
+    private final String nome;                 // Nome do treinador
+    private final ArrayList<Pokemon> mochila;  // Lista de Pokémon capturados
+    private final Pokedex pokedex;             // Registro de espécies
 
-    // Construtor do treinador, já inicializa a mochila vazia
     public Treinador(String nome) {
-        this.nome = nome;
-        this.mochila = new ArrayList<>();
+        this.nome = nome;                // Define nome
+        this.mochila = new ArrayList<>();// Inicializa mochila
+        this.pokedex = new Pokedex();    // Inicializa Pokédex
     }
 
-    // Retorna o nome do treinador
-    public String getNome() {
-        return nome;
-    }
-
-    // Adiciona um Pokémon capturado à mochila
+    // Adiciona Pokémon à mochila e registra na Pokédex
     public void adicionarPokemon(Pokemon p) {
-        mochila.add(p);
-        System.out.println(p.getNome() + " foi adicionado à mochila de " + nome);
+        p.setSelvagem(false);        // Agora pertence ao treinador
+        mochila.add(p);              // Guarda na mochila
+        pokedex.registrar(p);        // Registra na Pokédex
+        System.out.println(p.getNome() + " foi adicionado à mochila!");
     }
 
-    // Exibe os Pokémons que estão na mochila
+    // Mostra todos os Pokémon na mochila
     public void mostrarMochila() {
-        System.out.println("Mochila do treinador " + nome + ":");
-
         if (mochila.isEmpty()) {
-            System.out.println("  [nenhum Pokémon capturado ainda]");
+            System.out.println("Mochila vazia.");
         } else {
+            System.out.println("=== MOCHILA ===");
             for (Pokemon p : mochila) {
-                System.out.println("  - " + p.getNome() + " (Tipo: " + p.getTipo() + ")");
+                System.out.println(p.getNome() + " - Tipo: " + p.getTipo() +
+                                   " - Nível: " + p.getNivel() +
+                                   " - Exp: " + p.getExperiencia());
             }
         }
     }
 
-    // Retorna a quantidade de Pokémons capturados
-    public int getQuantidadePokemons() {
-        return mochila.size();
+    // Mostra Pokédex
+    public void mostrarPokedex() {
+        pokedex.mostrar();
     }
 
-    // Retorna a lista completa de Pokémons (para salvar em arquivo, por exemplo)
-    public ArrayList<Pokemon> getPokemons() {
-        return mochila;
+    Iterable<Pokemon> getPokemons() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    Iterable<Pokemon> getPokemon() {
-        throw new UnsupportedOperationException("Nao suportado.");
-    }
 
-    public int getLinha() {
-        return linha;
-    }
-
-    public void setLinha(int linha) {
-        this.linha = linha;
-    }
-
-    public int getColuna() {
-        return coluna;
-    }
-
-    public void setColuna(int coluna) {
-        this.coluna = coluna;
-    }
 }
