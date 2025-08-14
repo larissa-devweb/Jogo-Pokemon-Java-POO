@@ -42,8 +42,37 @@ public class Tabuleiro {
             posicionarPokemonAleatoriamente(pokemon, selvagem);
     }
 
-    public void posicionarPokemonEmVizinhoLivre(int linha, int coluna, Pokemon pokemon) {
-        throw new UnsupportedOperationException("Nao suportado.");
+    public void posicionarPokemonEmVizinhoLivre(int linhaAtual, int colunaAtual, Pokemon pokemon) {
+        // Lista de direções possíveis: cima, baixo, esquerda, direita
+        int[][] direcoes = {
+            {-1, 0}, // cima
+            {1, 0},  // baixo
+            {0, -1}, // esquerda
+            {0, 1}   // direita
+        };
+
+        boolean conseguiuMover = false;
+
+        // Tenta mover para uma célula vizinha livre
+        for (int[] direcao : direcoes) {
+            int novaLinha = linhaAtual + direcao[0];
+            int novaColuna = colunaAtual + direcao[1];
+
+            if (posicaoValida(novaLinha, novaColuna) &&
+                    estaVazio(novaLinha, novaColuna)) {
+
+                removerPokemon(linhaAtual, colunaAtual); // limpa a célula antiga
+                posicionarPokemon(novaLinha, novaColuna, pokemon, true); // reposiciona
+
+                System.out.println(pokemon.getNome() + " fugiu para [" + novaLinha + "," + novaColuna + "].");
+                conseguiuMover = true;
+                break; // para de tentar depois da primeira posição válida
+            }
+        }
+
+        if (!conseguiuMover) {
+            System.out.println(pokemon.getNome() + " tentou fugir, mas está cercado. Ficou parado.");
+        }
     }
 
     public void removerPokemon(int linha, int coluna) {
