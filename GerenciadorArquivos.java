@@ -4,14 +4,14 @@ package jogopokemon;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
-/**
- * //AQUI FICA salvar e carregar os dados do jogo (partida, pokémons, treinadores e etc
- *
- */
+import jogopokemon.pokemons.*;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Aqui fica salvar e carregar os dados do jogo (partida, pokémons, treinadores, etc).
+ *
+ */
 public class GerenciadorArquivos {
     private static final String CAMINHO_MOCHILA = "mochila.txt";
     private static final String CAMINHO_TABULEIRO = "tabuleiro.txt";
@@ -60,8 +60,8 @@ public class GerenciadorArquivos {
     // Salva todos os Pokémon do tabuleiro no arquivo tabuleiro.txt
     public static void salvarTabuleiro(Tabuleiro tabuleiro) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAMINHO_TABULEIRO))) {
-            for (int linha = 0; linha < tabuleiro.tamanho; linha++) {
-                for (int coluna = 0; coluna < tabuleiro.tamanho; coluna++) {
+            for (int linha = 0; linha < tabuleiro.getTamanho(); linha++) {
+                for (int coluna = 0; coluna < tabuleiro.getTamanho(); coluna++) {
                     Pokemon p = tabuleiro.getPokemon(linha, coluna);
                     if (p != null) {
                         writer.write(p.getNome() + ";" + p.getTipo() + ";" + linha + ";" + coluna + ";" + p.isSelvagem());
@@ -77,23 +77,15 @@ public class GerenciadorArquivos {
 
     // Método utilitário para criar Pokémon com base no tipo (usado no carregamento)
     private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
-        switch (tipo) {
-            case "agua" -> {
-                return new PokemonAgua(nome);
-            }
-            case "terra" -> {
-                return new PokemonTerra(nome);
-            }
-            case "floresta" -> {
-                return new PokemonFloresta(nome);
-            }
-            case "eletrico" -> {
-                return new PokemonEletrico(nome);
-            }
+        return switch (tipo) {
+            case "agua" -> new Agua(nome);
+            case "terra" -> new Terra(nome);
+            case "floresta" -> new Floresta(nome);
+            case "eletrico" -> new Eletrico(nome);
             default -> {
                 System.out.println("Tipo desconhecido: " + tipo);
-                return null;
+                yield null;
             }
-        }
+        };
     }
 }
