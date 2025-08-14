@@ -2,72 +2,64 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jogopokemon.pokemons;
+package jogopokemon;
 
-import jogopokemon.IAtaque;
 
-public abstract class Pokemon implements IAtaque {
-    protected String nome;
-    protected int forca;
-    protected int experiencia;
-    protected int nivel;
-    protected int energia;
-    protected boolean selvagem;
+// Classe abstrata representando qualquer Pokémon
+public abstract class Pokemon {
+    protected String nome;        // Nome do Pokémon
+    protected String tipo;        // Tipo (Água, Fogo, etc.)
+    protected boolean selvagem;   // Indica se é selvagem ou de treinador
+    protected int nivel;          // Nível atual
+    protected int experiencia;    // Pontos de experiência
 
-    public Pokemon(String nome, int forca, int experiencia, int nivel, int energia, boolean selvagem) {
-        this.nome = nome;
-        this.forca = forca;
-        this.experiencia = experiencia;
-        this.nivel = nivel;
-        this.energia = energia;
-        this.selvagem = selvagem;
+    // Construtor
+    public Pokemon(String nome, String tipo) {
+        this.nome = nome;              // Define nome
+        this.tipo = tipo;              // Define tipo
+        this.selvagem = true;          // Por padrão nasce selvagem
+        this.nivel = 1;                // Nível inicial
+        this.experiencia = 0;          // Começa sem experiência
     }
 
+    // Getters básicos
+    public String getNome() { return nome; }
+    public String getTipo() { return tipo; }
+    public boolean isSelvagem() { return selvagem; }
+    public int getNivel() { return nivel; }
+    public int getExperiencia() { return experiencia; }
+
+    // Define se o Pokémon é selvagem ou não
+    public void setSelvagem(boolean selvagem) { this.selvagem = selvagem; }
+
+    // Método para ganhar experiência
     public void ganharExperiencia(int pontos) {
-        this.experiencia += pontos;
-        if (this.experiencia >= nivel * 10) {
-            this.nivel++;
+        this.experiencia += pontos; // Soma pontos recebidos
+        // Se atingiu 100 pontos, sobe de nível
+        if (this.experiencia >= 100) {
+            subirNivel();
+            this.experiencia -= 100; // Reseta o excedente
         }
     }
 
-    public void restaurarEnergia() {
-        this.energia = 100;
+    // Método para subir de nível
+    private void subirNivel() {
+        this.nivel++; // Aumenta nível
+        System.out.println(this.nome + " subiu para o nível " + this.nivel + "!");
     }
 
-    public String getNome() {
-        return nome;
+    // Método abstrato para calcular dano (polimorfismo)
+    public abstract int calcularDano();
+
+    int getEnergia() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public int getEnergia() {
-        return energia;
+    void restaurarEnergia() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public void receberDano(int dano) {
-        this.energia -= dano;
-        if (this.energia < 0) this.energia = 0;
-    }
-
-    public boolean isSelvagem() {
-        return selvagem;
-    }
-
-    public void setSelvagem(boolean selvagem) {
-        this.selvagem = selvagem;
-    }
-
-    public int getNivel() {
-        return nivel;
-    }
-
-    public int getExperiencia() {
-        return experiencia;
-    }
-
-    public int getForca() {
-        return forca;
-    }
-
-    public String getTipo() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    void receberDano(int dano) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
