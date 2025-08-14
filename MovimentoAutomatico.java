@@ -4,9 +4,6 @@
  */
 package jogopokemon;
 
-import jogopokemon.janelas.JanelaJogo;
-import jogopokemon.pokemons.Pokemon;
-
 /**
 O que a Thread vai fazer
 
@@ -16,11 +13,15 @@ Funciona paralelo ao que o jogador estiver fazendo
 
 public class MovimentoAutomatico extends Thread {
     private final Tabuleiro tabuleiro;
-    private final JanelaJogo gui; // referência para atualizar a interface
+    private final PokemonGUI gui; // referência para atualizar a interface
 
-    public MovimentoAutomatico(Tabuleiro tabuleiro, JanelaJogo gui) {
+    public MovimentoAutomatico(Tabuleiro tabuleiro,  PokemonGUI gui) {
         this.tabuleiro = tabuleiro;
         this.gui = gui;
+    }
+
+    MovimentoAutomatico(Tabuleiro tabuleiro) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -29,11 +30,10 @@ public class MovimentoAutomatico extends Thread {
             try {
                 Thread.sleep(3000); // espera 3 segundos
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
 
-            int linha = (int) (Math.random() * tabuleiro.getTamanho());
-            int coluna = (int) (Math.random() * tabuleiro.getTamanho());
+            int linha = (int) (Math.random() * tabuleiro.tamanho);
+            int coluna = (int) (Math.random() * tabuleiro.tamanho);
 
             Pokemon p = tabuleiro.getPokemon(linha, coluna);
 
@@ -41,8 +41,8 @@ public class MovimentoAutomatico extends Thread {
                 int novaLinha = linha + (int) (Math.random() * 3) - 1;
                 int novaColuna = coluna + (int) (Math.random() * 3) - 1;
 
-                if (novaLinha >= 0 && novaLinha < tabuleiro.getTamanho() &&
-                    novaColuna >= 0 && novaColuna < tabuleiro.getTamanho() &&
+                if (novaLinha >= 0 && novaLinha < tabuleiro.tamanho &&
+                    novaColuna >= 0 && novaColuna < tabuleiro.tamanho &&
                     tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
 
                     tabuleiro.removerPokemon(linha, coluna);
