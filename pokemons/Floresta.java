@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jogopokemon;
+package jogopokemon.pokemons;
 
 import java.util.Random;
 
-public class PokemonFloresta extends Pokemon {
+public class Floresta extends Pokemon {
 
     private int energia;
-    public PokemonFloresta(String nome) {
+    public Floresta(String nome) {
         super(nome,"Floresta");
     }
 

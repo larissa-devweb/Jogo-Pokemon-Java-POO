@@ -28,8 +28,7 @@ public class MovimentoAutomatico extends Thread {
         while (true) {
             try {
                 Thread.sleep(3000); // espera 3 segundos
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
 
             int linha = (int) (Math.random() * tabuleiro.getTamanho());

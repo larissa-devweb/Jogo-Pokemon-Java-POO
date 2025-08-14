@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>acao</w>
+      <w>adversario</w>
       <w>automatico</w>
       <w>botao</w>
       <w>botoes</w>
@@ -9,15 +10,18 @@
       <w>direcao</w>
       <w>direcoes</w>
       <w>eletrico</w>
+      <w>especies</w>
       <w>gerenciador</w>
       <w>nbfs</w>
       <w>nbhost</w>
       <w>nivel</w>
       <w>opcao</w>
+      <w>pokedex</w>
       <w>pokemons</w>
       <w>posicao</w>
       <w>posicoes</w>
       <w>regiao</w>
+      <w>reseta</w>
       <w>totodile</w>
     </words>
   </dictionary>

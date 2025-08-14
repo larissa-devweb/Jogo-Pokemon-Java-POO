@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jogopokemon;
+package jogopokemon.pokemons;
 
 import java.util.Random;
 
-public class PokemonEletrico extends Pokemon {
+public class Eletrico extends Pokemon {
     private boolean paralisou = false;
 
-    public PokemonEletrico(String nome) {
+    public Eletrico(String nome) {
         super(nome,"eletrico");
     }
 
