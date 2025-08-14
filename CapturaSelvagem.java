@@ -1,5 +1,6 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import java.util.Random;
 
 /**
@@ -27,10 +28,7 @@ public class CapturaSelvagem {
         // Se a chance for menor que 0.5, a captura é bem-sucedida
         if (chance < 0.5) {
             // Adiciona o Pokémon à mochila do treinador
-            treinador.adicionarPokemonNaMochila(pokemon);
-
-            // Registra o Pokémon na Pokédex
-            treinador.getPokedex();
+            treinador.adicionarPokemon(pokemon);
 
             // Remove o Pokémon do tabuleiro
             tabuleiro.removerPokemon(linha, coluna);
@@ -39,7 +37,7 @@ public class CapturaSelvagem {
             return true;
         } else {
             // Caso falhe, o Pokémon tenta fugir para uma célula vizinha
-            tabuleiro.moverPokemonParaVizinhoLivre(linha, coluna, pokemon);
+            tabuleiro.posicionarPokemonEmVizinhoLivre(linha, coluna, pokemon);
 
             // Retorna falha
             return false;

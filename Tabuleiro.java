@@ -42,6 +42,10 @@ public class Tabuleiro {
             posicionarPokemonAleatoriamente(pokemon, selvagem);
     }
 
+    public void posicionarPokemonEmVizinhoLivre(int linha, int coluna, Pokemon pokemon) {
+        throw new UnsupportedOperationException("Nao suportado.");
+    }
+
     public void removerPokemon(int linha, int coluna) {
         if (posicaoValida(linha, coluna)) {
             tabuleiro[linha][coluna] = null;
@@ -98,7 +102,7 @@ public class Tabuleiro {
     }
 
     public void mostrarTabuleiro(boolean debug) {
-        throw new UnsupportedOperationException("Nao suportado."); 
+        throw new UnsupportedOperationException("Nao suportado.");
     }
 
     public Pokemon getPokemon(int linha, int coluna) {

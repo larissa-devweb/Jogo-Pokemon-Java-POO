@@ -1,5 +1,6 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import java.util.ArrayList;
 
 // Classe que representa o treinador
@@ -7,6 +8,8 @@ public class Treinador {
     private final String nome;                 // Nome do treinador
     private final ArrayList<Pokemon> mochila;  // Lista de Pokémon capturados
     private final Pokedex pokedex;             // Registro de espécies
+    private int linha;
+    private int coluna;
 
     public Treinador(String nome) {
         this.nome = nome;                // Define nome
@@ -45,5 +48,24 @@ public class Treinador {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    // Retorna o nome do treinador
+    public String getNome() {
+        return nome;
+    }
 
+    public int getLinha() {
+        return linha;
+    }
+
+    public void setLinha(int linha) {
+        this.linha = linha;
+    }
+
+    public int getColuna() {
+        return coluna;
+    }
+
+    public void setColuna(int coluna) {
+        this.coluna = coluna;
+    }
 }

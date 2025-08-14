@@ -1,5 +1,7 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
+
 public class Batalha2Pokemons {
     public static void batalhar(Pokemon p1, Pokemon p2) {
         int dano1 = p1.calcularDano();

@@ -1,5 +1,6 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Pokemon;
 import java.util.HashSet;
 import java.util.Set;
 
