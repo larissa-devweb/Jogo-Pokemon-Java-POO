@@ -17,7 +17,7 @@ public class Tabuleiro {
     }
 
     // Posiciona um Pokémon se a posição estiver livre e válida
-    public void posicionarPokemon(int linha, int coluna, Pokemon pokemon, boolean selvagem) {
+    public void posicionarPokemon(int linha, int coluna, Pokemon pokemon) {
         if (!posicaoValida(linha, coluna)) {
             throw new RegiaoInvalidaException("Posição fora dos limites do tabuleiro.");
         }
@@ -27,19 +27,17 @@ public class Tabuleiro {
             return;
         }
 
-        pokemon.setSelvagem(selvagem);
         tabuleiro[linha][coluna] = pokemon;
     }
 
-    public void posicionarPokemonAleatoriamente(Pokemon pokemon, boolean selvagem) {
+    public void posicionarPokemonAleatoriamente(Pokemon pokemon) {
         int linha = (int) (Math.random() * tamanho) - 1;
         int coluna = (int) (Math.random() * tamanho) - 1;
 
-        if (posicaoValida(linha, coluna) && tabuleiro[linha][coluna] == null) {
-            pokemon.setSelvagem(selvagem);
+        if (posicaoValida(linha, coluna) && tabuleiro[linha][coluna] == null)
             tabuleiro[linha][coluna] = pokemon;
-        } else
-            posicionarPokemonAleatoriamente(pokemon, selvagem);
+        else
+            posicionarPokemonAleatoriamente(pokemon);
     }
 
     public void posicionarPokemonEmVizinhoLivre(int linhaAtual, int colunaAtual, Pokemon pokemon) {
@@ -62,7 +60,7 @@ public class Tabuleiro {
                     estaVazio(novaLinha, novaColuna)) {
 
                 removerPokemon(linhaAtual, colunaAtual); // limpa a célula antiga
-                posicionarPokemon(novaLinha, novaColuna, pokemon, true); // reposiciona
+                posicionarPokemon(novaLinha, novaColuna, pokemon); // reposiciona
 
                 System.out.println(pokemon.getNome() + " fugiu para [" + novaLinha + "," + novaColuna + "].");
                 conseguiuMover = true;

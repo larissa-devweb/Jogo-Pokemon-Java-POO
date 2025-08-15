@@ -4,6 +4,7 @@
       <w>acao</w>
       <w>adversario</w>
       <w>agua</w>
+      <w>aleatorias</w>
       <w>automatico</w>
       <w>botao</w>
       <w>botoes</w>
@@ -27,7 +28,9 @@
       <w>registradas</w>
       <w>registro</w>
       <w>reseta</w>
+      <w>subpacote</w>
       <w>totodile</w>
+      <w>variacao</w>
     </words>
   </dictionary>
 </component>

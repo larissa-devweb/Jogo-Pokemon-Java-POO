@@ -13,15 +13,15 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class JanelaPosicoes extends JFrame {
+public class EscolherPosicoes extends JFrame {
     private final Tabuleiro tabuleiro;
     private final JButton[][] botoesTabuleiro;
     private final ArrayList<JButton> botoesPokemons;
     private Pokemon pokemonEscolhido;
     private boolean modoDebug;
 
-    public JanelaPosicoes() {
-        super("Pokémon GUI Básico");
+    public EscolherPosicoes() {
+        super("Distribuir Pokémons");
 
         Tabuleiro tabuleiro = new Tabuleiro(5);
         this.tabuleiro = tabuleiro;
@@ -73,7 +73,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Eletrico("Pikachu"));
+                escolherPokemon(new Eletrico("Pikachu", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -87,7 +87,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Floresta("Bulbasaur"));
+                escolherPokemon(new Floresta("Bulbasaur", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -101,7 +101,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Agua("Squirtle"));
+                escolherPokemon(new Agua("Squirtle", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -131,7 +131,10 @@ public class JanelaPosicoes extends JFrame {
 
     private void posicionarPokemon(int linha, int coluna) {
         try {
-            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido, false);
+            if (pokemonEscolhido == null)
+                throw new NullPointerException();
+
+            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido);
             for (JButton botao : botoesPokemons) {
                 if (!modoDebug)
                     botao.setEnabled(false);
@@ -164,15 +167,15 @@ public class JanelaPosicoes extends JFrame {
     }
 
     private void abrirJogo() {
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"), true);
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"), true);
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"));
 
         // Fechar janela atual sem sair do programa
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
         // Abrir jogo
-        JanelaJogo jogo = new JanelaJogo(tabuleiro, new Treinador("Ash"));
+        Jogo jogo = new Jogo(tabuleiro, new Treinador("Ash"));
 
         // Inicia thread de movimento automático
         MovimentoAutomatico movimento = new MovimentoAutomatico(tabuleiro, jogo);

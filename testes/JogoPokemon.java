@@ -1,7 +1,7 @@
 package jogopokemon.testes;
 
 import jogopokemon.*;
-import jogopokemon.janelas.JanelaJogo;
+import jogopokemon.janelas.Jogo;
 import jogopokemon.pokemons.Pokemon;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
@@ -17,18 +17,18 @@ public class JogoPokemon {
         // Cria tabuleiro e treinador
         Tabuleiro tabuleiro = new Tabuleiro(6);
         Treinador treinadorJogador = new Treinador("Ash");
-        JanelaJogo janelaJogo = new JanelaJogo(tabuleiro, treinadorJogador);
+        Jogo jogo = new Jogo(tabuleiro, treinadorJogador);
 
         int dicasRestantes = 3; // máximo de dicas
         boolean jogoAtivo = true;
 
         // Posiciona alguns Pokémons selvagens no início
-        tabuleiro.posicionarPokemon(1, 1, new Agua("Squirtle"), true);
-        tabuleiro.posicionarPokemon(2, 3, new Eletrico("Pikachu"), true);
-        tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"), true);
+        tabuleiro.posicionarPokemon(1, 1, new Agua("Squirtle"));
+        tabuleiro.posicionarPokemon(2, 3, new Eletrico("Pikachu"));
+        tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"));
 
         // Inicia thread para movimentar Pokémon automaticamente
-        MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, janelaJogo);
+        MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, jogo);
         threadMovimento.start();
 
         // Loop principal do jogo
@@ -51,13 +51,13 @@ public class JogoPokemon {
             switch (opcao) {
                 case 1:
                     Pokemon pManual = new Floresta("Bulbasaur");
-                    tabuleiro.posicionarPokemon(3, 2, pManual, true);
+                    tabuleiro.posicionarPokemon(3, 2, pManual);
                     System.out.println("Bulbasaur posicionado em [3,2].");
                     break;
 
                 case 2:
-                    tabuleiro.posicionarPokemon(0, 0, new Agua("Totodile"), true);
-                    tabuleiro.posicionarPokemon(0, 5, new Eletrico("Magnemite"), true);
+                    tabuleiro.posicionarPokemon(0, 0, new Agua("Totodile"));
+                    tabuleiro.posicionarPokemon(0, 5, new Eletrico("Magnemite"));
                     System.out.println("Pokémons posicionados aleatoriamente.");
                     break;
 

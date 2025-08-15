@@ -9,9 +9,14 @@ import java.util.Random;
 public class Eletrico extends Pokemon {
     private boolean paralisou = false;
 
-    public Eletrico(String nome) {
-        super(nome,"eletrico");
+    public Eletrico(String nome, boolean selvagem) {
+        super(nome, "eletrico", selvagem);
     }
+
+    public Eletrico(String nome) {
+        super(nome, "eletrico");
+    }
+
     @Override
     public int calcularDano() {
         // Polimorfismo: elétrico tem mais variação de dano

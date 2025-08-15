@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
-public class JanelaInicial extends JFrame {
-    public JanelaInicial() {
+public class BoasVindas extends JFrame {
+    public BoasVindas() {
         super("Pokémon GUI Básico");
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -29,7 +29,7 @@ public class JanelaInicial extends JFrame {
 
         botao = new JButton("Distribuir Pokémons aleatoriamente");
         botao.setPreferredSize(new Dimension(250, 30));
-        botao.addActionListener(e -> definirPosicoes());
+        botao.addActionListener(e -> posicoesAleatorias());
 
         constraints.gridy = 3;
         add(botao, constraints);
@@ -45,6 +45,15 @@ public class JanelaInicial extends JFrame {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
         // Abrir janela de definir posições
-        new JanelaPosicoes();
+        new EscolherPosicoes();
+    }
+
+    private void posicoesAleatorias() {
+        // Fechar janela atual sem sair do programa
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+
+        // Abrir janela de definir posições
+        new PosicoesAleatorias();
     }
 }

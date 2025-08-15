@@ -9,8 +9,12 @@ import java.util.Random;
 public class Floresta extends Pokemon {
 
     private int energia;
+    public Floresta(String nome, boolean selvagem) {
+        super(nome, "Floresta", selvagem);
+    }
+
     public Floresta(String nome) {
-        super(nome,"Floresta");
+        super(nome, "Floresta");
     }
 
     @Override
