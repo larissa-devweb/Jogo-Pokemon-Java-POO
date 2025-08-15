@@ -23,9 +23,9 @@ public class JogoPokemon {
         boolean jogoAtivo = true;
 
         // Posiciona alguns Pokémons selvagens no início
-        tabuleiro.posicionarPokemon(1, 1, new Agua("Squirtle"));
-        tabuleiro.posicionarPokemon(2, 3, new Eletrico("Pikachu"));
-        tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"));
+        tabuleiro.posicionarPokemon(1, 1, new Agua("Squirtle"), true);
+        tabuleiro.posicionarPokemon(2, 3, new Eletrico("Pikachu"), true);
+        tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"), true);
 
         // Inicia thread para movimentar Pokémon automaticamente
         MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, jogo);
@@ -51,13 +51,13 @@ public class JogoPokemon {
             switch (opcao) {
                 case 1:
                     Pokemon pManual = new Floresta("Bulbasaur");
-                    tabuleiro.posicionarPokemon(3, 2, pManual);
+                    tabuleiro.posicionarPokemon(3, 2, pManual, true);
                     System.out.println("Bulbasaur posicionado em [3,2].");
                     break;
 
                 case 2:
-                    tabuleiro.posicionarPokemon(0, 0, new Agua("Totodile"));
-                    tabuleiro.posicionarPokemon(0, 5, new Eletrico("Magnemite"));
+                    tabuleiro.posicionarPokemon(0, 0, new Agua("Totodile"), true);
+                    tabuleiro.posicionarPokemon(0, 5, new Eletrico("Magnemite"), true);
                     System.out.println("Pokémons posicionados aleatoriamente.");
                     break;
 

@@ -1,28 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon.pokemons;
 
 import java.util.Random;
 
+/**
+ * Tipo Floresta
+ * ✔ Regeneração: cura 20% do dano que causar (implementado na Batalha2Pokemons
+ *   logo após aplicar o dano, usando hpMax que agora existe em Pokemon).
+ */
 public class Floresta extends Pokemon {
 
-    private int energia;
-    public Floresta(String nome, boolean selvagem) {
-        super(nome, "Floresta", selvagem);
+    public Floresta(String nome) {
+        super(nome, 28, 6, 1, 0, true, "Floresta");
     }
 
-    public Floresta(String nome) {
-        super(nome, "Floresta");
+    public Floresta(String nome, boolean selvagem) {
+        super(nome, 28, 6, 1, 0, selvagem, "Floresta");
     }
 
     @Override
     public int calcularDano() {
-        // Polimorfismo: ataque com chance de golpe crítico
-        Random rand = new Random();
-        boolean critico = rand.nextInt(10) < 2; // 20% de chance
-        int base = ataque + nivel;
-        return critico ? base * 2 : base;
+        return new Random().nextInt(forca + 1) * nivel + xp;
     }
 }

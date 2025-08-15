@@ -73,7 +73,7 @@ public class EscolherPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Eletrico("Pikachu", false));
+                escolherPokemon(new Eletrico("Pikachu"));
                 finalBotao.setEnabled(true);
             });
         }
@@ -134,7 +134,7 @@ public class EscolherPosicoes extends JFrame {
             if (pokemonEscolhido == null)
                 throw new NullPointerException();
 
-            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido);
+            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido, true);
             for (JButton botao : botoesPokemons) {
                 if (!modoDebug)
                     botao.setEnabled(false);

@@ -1,32 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon.pokemons;
-
 
 import java.util.Random;
 
+/**
+ * Tipo Água
+ * Construtores sobrecarregados (1 arg e 2 args) para casar com usos diferentes.
+ * Redução de dano recebido (PDF: “redução de dano em ambientes adversos”).
+ */
 public class Agua extends Pokemon {
-    public Agua(String nome, boolean selvagem) {
-        // super() chama o construtor da classe mãe
-        // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem, tipo="Água"
-        super(nome, 8, 5, 1, 100, selvagem, "Água");
+
+    // ✔ construtor básico (selvagem por padrão)
+    public Agua(String nome) {
+        super(nome, 30, 5, 1, 0, true, "Água");
     }
 
-    public Agua(String nome) {
-        // super() chama o construtor da classe mãe
-        // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem=true, tipo="Água"
-        super(nome, 8, 5, 1, 100, true, "Água");
+    // ✔ construtor opcional usado por loaders que querem definir selvagem/dono
+    public Agua(String nome, boolean selvagem) {
+        super(nome, 30, 5, 1, 0, selvagem, "Água");
     }
 
     @Override
     public int calcularDano() {
-        // Polimorfismo: cálculo diferente para tipo Água
-        // Tipo água tem ataque mais constante
-        Random rand = new Random();
-        int variacao = rand.nextInt(5); // até +4
-        int ataque;
-        return ataque + nivel + variacao;
+        // Exemplo do PDF: random(força) * nível + xp
+        return new Random().nextInt(forca + 1) * nivel + xp;
+    }
+
+    @Override
+    public void receberDano(int dano) {
+        // ✔ redução ~30%
+        int reduzido = (int) Math.ceil(dano * 0.7);
+        super.receberDano(reduzido);
     }
 }

@@ -53,7 +53,7 @@ public class PosicoesAleatorias extends JFrame {
         add(botao, constraints);
 
         // TODO: Adicionar um na mochila do jogador e outro na do computador
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu", false));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu"));
         tabuleiro.posicionarPokemonAleatoriamente(new Floresta("Bulbasaur", false));
 
         // Selvagens

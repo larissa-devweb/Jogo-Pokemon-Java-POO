@@ -1,6 +1,18 @@
 package jogopokemon.pokemons;
 
-// Interface de ataque (do PDF: “Pokémons podem batalhar”, precisamos de um contrato para o ataque)
+import jogopokemon.Treinador;
+
+/**
+ * Interface de ataque (PDF: “Pokémons podem batalhar”).
+ * ✔ Mantida em arquivo próprio IAtaque.java (conserta o erro “public class/interface
+ *   deve estar em arquivo com mesmo nome”).
+ */
 public interface IAtaque {
-    int calcularDano(); // Qualquer Pokémon deve saber calcular seu dano
+
+    // Cada Pokémon sabe calcular seu dano (as subclasses implementam).
+    int calcularDano();
+
+    // Usamos para imprimir “Treinador: X” na batalha.
+    Treinador getTreinador();
 }
+

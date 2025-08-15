@@ -1,89 +1,112 @@
 package jogopokemon;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-import jogopokemon.pokemons.*;
 import java.io.*;
-import java.util.Scanner;
+
+import jogopokemon.pokemons.*;
 
 /**
- * Aqui fica salvar e carregar os dados do jogo (partida, pokémons, treinadores, etc).
- *
+ * ✔ Usa getTipo() (agora existe em Pokemon).
+ * ✔ Construtores das espécies aceitam (String nome) e (String, boolean) — aqui usamos o de 1 arg.
+ * ✔ Mantido método utilitário criarPokemonPorTipo(...) para o carregamento.
  */
 public class GerenciadorArquivos {
-    private static final String CAMINHO_MOCHILA = "mochila.txt";
-    private static final String CAMINHO_TABULEIRO = "tabuleiro.txt";
 
-    // Salva os Pokémon da mochila do treinador no arquivo mochila.txt
-    public static void salvarMochila(Treinador treinador) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAMINHO_MOCHILA))) {
-            for (Pokemon p : treinador.getMochila()) {
-                writer.write(p.getNome() + ";" + p.getTipo());
-                writer.newLine();
+    // ======== Mochila ========
+    public static void salvarMochila(Treinador t) {
+        File f = new File("mochila.txt");
+        try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
+            for (Pokemon p : t.getMochila()) {
+                pw.println(p.getTipo() + ";" + p.getNome() + ";" + p.getNivel() + ";" + p.getXp() + ";" + p.getHp());
             }
-            System.out.println("Mochila salva com sucesso.");
+            System.out.println("Mochila salva em " + f.getAbsolutePath());
         } catch (IOException e) {
             System.out.println("Erro ao salvar mochila: " + e.getMessage());
         }
     }
 
-    // Carrega os Pokémon do arquivo mochila.txt para a mochila do treinador
-    public static void carregarMochila(Treinador treinador) {
-        File arquivo = new File(CAMINHO_MOCHILA);
-        if (!arquivo.exists()) {
-            System.out.println("Arquivo de mochila não encontrado.");
+    public static void carregarMochila(Treinador t) {
+        File f = new File("mochila.txt");
+        if (!f.exists()) {
+            System.out.println("Nenhum arquivo de mochila encontrado.");
             return;
         }
-
-        try (Scanner scanner = new Scanner(arquivo)) {
-            while (scanner.hasNextLine()) {
-                String linha = scanner.nextLine();
-                String[] partes = linha.split(";");
-                if (partes.length == 2) {
-                    String nome = partes[0];
-                    String tipo = partes[1].toLowerCase();
-                    Pokemon p = criarPokemonPorTipo(tipo, nome);
-                    // p.setSelvagem(false);
-                    if (p != null) treinador.adicionarPokemonNaMochila(p);
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] parts = linha.split(";");
+                if (parts.length >= 2) {
+                    String tipo = parts[0];
+                    String nome = parts[1];
+                    Pokemon p = criarPokemonPorTipo(tipo, nome); // ✔ usa construtor 1 arg
+                    p.setSelvagem(false);
+                    p.setTreinador(t);
+                    t.adicionarPokemon(p); // ✔ método presente
                 }
             }
-            System.out.println("Mochila carregada com sucesso.");
+            System.out.println("Mochila carregada.");
         } catch (IOException e) {
             System.out.println("Erro ao carregar mochila: " + e.getMessage());
         }
     }
 
-    // Salva todos os Pokémon do tabuleiro no arquivo tabuleiro.txt
-    public static void salvarTabuleiro(Tabuleiro tabuleiro) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAMINHO_TABULEIRO))) {
-            for (int linha = 0; linha < tabuleiro.getTamanho(); linha++) {
-                for (int coluna = 0; coluna < tabuleiro.getTamanho(); coluna++) {
-                    Pokemon p = tabuleiro.getPokemon(linha, coluna);
+    // ======== Tabuleiro (exemplo básico) ========
+    public static void salvarTabuleiro(Tabuleiro tab) {
+        File f = new File("tabuleiro.txt");
+        try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
+            for (int i = 0; i < tab.getTamanho(); i++) {
+                for (int j = 0; j < tab.getTamanho(); j++) {
+                    Pokemon p = tab.getPokemon(i, j);
                     if (p != null) {
-                        writer.write(p.getNome() + ";" + p.getTipo() + ";" + linha + ";" + coluna + ";" + p.isSelvagem());
-                        writer.newLine();
+                        pw.println(i + ";" + j + ";" + p.getTipo() + ";" + p.getNome() + ";" + (p.isSelvagem() ? "S" : "N"));
                     }
                 }
             }
-            System.out.println("Tabuleiro salvo com sucesso.");
+            System.out.println("Tabuleiro salvo em " + f.getAbsolutePath());
         } catch (IOException e) {
             System.out.println("Erro ao salvar tabuleiro: " + e.getMessage());
         }
     }
 
-    // Método utilitário para criar Pokémon com base no tipo (usado no carregamento)
-    private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
-        return switch (tipo) {
-            case "agua" -> new Agua(nome);
-            case "terra" -> new Terra(nome);
-            case "floresta" -> new Floresta(nome);
-            case "eletrico" -> new Eletrico(nome);
-            default -> {
-                System.out.println("Tipo desconhecido: " + tipo);
-                yield null;
+    public static void carregarTabuleiro(Tabuleiro tab) {
+        File f = new File("tabuleiro.txt");
+        if (!f.exists()) {
+            System.out.println("Nenhum arquivo de tabuleiro encontrado.");
+            return;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] parts = linha.split(";");
+                if (parts.length >= 5) {
+                    int i = Integer.parseInt(parts[0]);
+                    int j = Integer.parseInt(parts[1]);
+                    String tipo = parts[2];
+                    String nome = parts[3];
+                    boolean selvagem = "S".equalsIgnoreCase(parts[4]);
+
+                    Pokemon p = criarPokemonPorTipo(tipo, nome);
+                    p.setSelvagem(selvagem);
+                    tab.posicionarPokemon(i, j, p,true);
+                }
             }
-        };
+            System.out.println("Tabuleiro carregado.");
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar tabuleiro: " + e.getMessage());
+        }
+    }
+
+    // ===== utilitário =====
+    private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
+        switch (tipo.toLowerCase()) {
+            case "agua":
+            case "água":      return new Agua(nome);
+            case "terra":     return new Terra(nome);
+            case "floresta":  return new Floresta(nome);
+            case "eletrico":
+            case "elétrico":  return new Eletrico(nome);
+            default:
+                System.out.println("Tipo desconhecido: " + tipo);
+                return null;
+        }
     }
 }

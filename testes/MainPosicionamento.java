@@ -43,28 +43,28 @@ public class MainPosicionamento {
                 System.out.println("Digite linha e coluna para posicionar Squirtle:");
                 int l = scanner.nextInt();
                 int c = scanner.nextInt();
-                tabuleiro.posicionarPokemon(l, c, p1);
+                tabuleiro.posicionarPokemon(l, c, p1, true);
 
                 System.out.println("Digite linha e coluna para posicionar Bulbasaur:");
                 l = scanner.nextInt();
                 c = scanner.nextInt();
-                tabuleiro.posicionarPokemon(l, c, p2);
+                tabuleiro.posicionarPokemon(l, c, p2, true);
 
                 System.out.println("Digite linha e coluna para posicionar Diglett:");
                 l = scanner.nextInt();
                 c = scanner.nextInt();
-                tabuleiro.posicionarPokemon(l, c, p3);
+                tabuleiro.posicionarPokemon(l, c, p3, true);
 
                 System.out.println("Digite linha e coluna para posicionar Pikachu:");
                 l = scanner.nextInt();
                 c = scanner.nextInt();
-                tabuleiro.posicionarPokemon(l, c, p4);
+                tabuleiro.posicionarPokemon(l, c, p4, true);
             } else {
                 // Posiciona automaticamente em regiões válidas se não for debug
-                tabuleiro.posicionarPokemon(1, 1, p1); // Região de água
-                tabuleiro.posicionarPokemon(0, 5, p2); // Região de floresta
-                tabuleiro.posicionarPokemon(4, 0, p3); // Região de terra
-                tabuleiro.posicionarPokemon(5, 5, p4); // Região de elétrico
+                tabuleiro.posicionarPokemon(1, 1, p1, true); // Região de água
+                tabuleiro.posicionarPokemon(0, 5, p2, true); // Região de floresta
+                tabuleiro.posicionarPokemon(4, 0, p3, true); // Região de terra
+                tabuleiro.posicionarPokemon(5, 5, p4, true); // Região de elétrico
             }
 
         } catch (RegiaoInvalidaException e) {

@@ -25,7 +25,7 @@ public class MovimentoAutomatico extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        do {
             try {
                 Thread.sleep(3000); // espera 3 segundos
             } catch (InterruptedException ignored) {
@@ -41,12 +41,12 @@ public class MovimentoAutomatico extends Thread {
                 int novaColuna = coluna + (int) (Math.random() * 3) - 1;
 
                 if (novaLinha >= 0 && novaLinha < tabuleiro.getTamanho() &&
-                    novaColuna >= 0 && novaColuna < tabuleiro.getTamanho() &&
-                    tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
+                        novaColuna >= 0 && novaColuna < tabuleiro.getTamanho() &&
+                        tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
 
                     tabuleiro.removerPokemon(linha, coluna);
                     try {
-                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p);
+                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, true);
                         System.out.println(p.getNome() + " se moveu para [" + novaLinha + "," + novaColuna + "]");
                         gui.atualizarTabuleiro(); // atualiza interface
                     } catch (RegiaoInvalidaException e) {
@@ -54,6 +54,6 @@ public class MovimentoAutomatico extends Thread {
                     }
                 }
             }
-        }
+        } while (true);
     }
 }

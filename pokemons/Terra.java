@@ -1,25 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon.pokemons;
 
 import java.util.Random;
 
+/**
+ * Tipo Terra
+ * ✔ Bônus de “força dobrada em turno ímpar” será tratado na Batalha2Pokemons
+ *   (evita dependência cruzada do pacote pokemons para a classe de batalha).
+ */
 public class Terra extends Pokemon {
-    public Terra(String nome, boolean selvagem) {
-        super(nome, "Terra", selvagem);
-    }
 
     public Terra(String nome) {
-        super(nome, "Terra");
+        super(nome, 35, 4, 1, 0, true, "Terra");
+    }
+
+    public Terra(String nome, boolean selvagem) {
+        super(nome, 35, 4, 1, 0, selvagem, "Terra");
     }
 
     @Override
     public int calcularDano() {
-        // Polimorfismo: Terra foca mais em defesa, ataque menos explosivo
-        Random rand = new Random();
-        int variacao = rand.nextInt(3); // até +2
-        return ataque + (nivel / 2) + variacao;
+        return new Random().nextInt(forca + 1) * nivel + xp;
     }
 }

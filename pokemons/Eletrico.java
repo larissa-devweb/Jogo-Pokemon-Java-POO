@@ -1,27 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon.pokemons;
 
 import java.util.Random;
 
+/**
+ * Tipo Elétrico
+ * Chance de paralisar o adversário 1 turno será aplicada na Batalha2Pokemons
+ *   (evita acoplamento com o “alvo” dentro de calcularDano()).
+ */
 public class Eletrico extends Pokemon {
-    private boolean paralisou = false;
-
-    public Eletrico(String nome, boolean selvagem) {
-        super(nome, "eletrico", selvagem);
-    }
 
     public Eletrico(String nome) {
-        super(nome, "eletrico");
+        super(nome, 25, 7, 1, 0, true, "Elétrico");
+    }
+
+    public Eletrico(String nome, boolean selvagem) {
+        super(nome, 25, 7, 1, 0, selvagem, "Elétrico");
     }
 
     @Override
     public int calcularDano() {
-        // Polimorfismo: elétrico tem mais variação de dano
-        Random rand = new Random();
-        int variacao = rand.nextInt(8); // até +7
-        return ataque + nivel + variacao;
+        return new Random().nextInt(forca + 1) * nivel + xp;
     }
 }
