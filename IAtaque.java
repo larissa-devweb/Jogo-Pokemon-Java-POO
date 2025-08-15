@@ -1,14 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon;
+//package jogopokemon.pokemons;
 
-/**
- *
- * @author lg_11
- */
+// Interface de ataque: contrato mínimo para qualquer Pokémon batalhar.
+// Mantém a assinatura citada na sua versão (inclui getTreinador()).
 public interface IAtaque {
+    // Cada Pokémon deve saber calcular seu dano (polimorfismo).
     int calcularDano();
-}
 
+    // Permite saber a quem pertence o Pokémon (ou null se selvagem).
+    Treinador getTreinador();
+}

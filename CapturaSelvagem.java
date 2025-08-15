@@ -4,42 +4,42 @@ import jogopokemon.pokemons.Pokemon;
 import java.util.Random;
 
 /**
- * Classe responsável por tentar capturar Pokémon selvagens.
+ * Captura Pokémon selvagem (50%) ou, se não for selvagem, deixa para batalha.
+ * Ao capturar: define dono, marca como não-selvagem e remove do tabuleiro.
  */
 public class CapturaSelvagem {
 
-    /**
-     * Método estático que tenta capturar um Pokémon selvagem.
-     *
-     * @param pokemon   Pokémon alvo da captura
-     * @param tabuleiro Tabuleiro do jogo
-     * @param linha     Linha onde o Pokémon está
-     * @param coluna    Coluna onde o Pokémon está
-     * @param treinador Treinador que está tentando a captura
-     * @return true se a captura for bem-sucedida, false caso contrário
-     */
     public static boolean tentarCaptura(Pokemon pokemon, Tabuleiro tabuleiro, int linha, int coluna, Treinador treinador) {
-        // Criamos um gerador de números aleatórios
-        Random random = new Random();
+        if (!pokemon.isSelvagem()) {
+            // Não é selvagem → a regra do PDF manda batalhar (isso acontece fora daqui).
+            System.out.println("Este Pokémon pertence a um treinador. Não é possível capturar.");
+            return false;
+        }
 
-        // Simulamos uma chance de captura (50% neste caso)
-        double chance = random.nextDouble(); // retorna valor entre 0.0 e 1.0
+        System.out.println("Tentando capturar " + pokemon.getNome() + "...");
+        boolean sucesso = new Random().nextBoolean(); // 50% de chance
 
-        // Se a chance for menor que 0.5, a captura é bem-sucedida
-        if (chance < 0.5) {
-            // Adiciona o Pokémon à mochila do treinador
-            treinador.adicionarPokemon(pokemon);
+        if (sucesso) {
+            // Vincula ao treinador
+            pokemon.setSelvagem(false);
+            pokemon.setTreinador(treinador);
 
-            // Remove o Pokémon do tabuleiro
+            // Coloca na mochila e registra na Pokédex
+            treinador.adicionarPokemonNaMochila(pokemon);
+
+            // Remove do tabuleiro
             tabuleiro.removerPokemon(linha, coluna);
 
-            // Retorna sucesso
+            System.out.println(pokemon.getNome() + " foi capturado com sucesso.");
             return true;
         } else {
-            // Caso falhe, o Pokémon tenta fugir para uma célula vizinha
-            tabuleiro.posicionarPokemonEmVizinhoLivre(linha, coluna, pokemon);
-
-            // Retorna falha
+            System.out.println(pokemon.getNome() + " escapou.");
+            // Tenta mover para célula vizinha livre, se seu Tabuleiro tiver esse método
+            try {
+                tabuleiro.posicionarPokemonEmVizinhoLivre(linha, coluna, pokemon);
+            } catch (Exception e) {
+                System.out.println("Não foi possível mover o Pokémon que fugiu: " + e.getMessage());
+            }
             return false;
         }
     }

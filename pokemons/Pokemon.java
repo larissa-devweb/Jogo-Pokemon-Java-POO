@@ -1,90 +1,81 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogopokemon.pokemons;
 
+import jogopokemon.IAtaque;
+import jogopokemon.Treinador;
 
-// Interface de ataque (do PDF: “Pokémons podem batalhar”, precisamos de um contrato para o ataque)
-public interface IAtaque {
-    int calcularDano(); // Qualquer Pokémon deve saber calcular seu dano
-}
-
-// Classe abstrata para representar qualquer Pokémon (do PDF: “Pokémons têm tipos e características”)
+// Classe base abstrata para todos os Pokémon.
+// Aqui ficam vida (HP), ataque, defesa, nível, experiência, tipo, vínculo com treinador etc.
 public abstract class Pokemon implements IAtaque {
 
-    // Nome do Pokémon (identificação na Pokédex)
-    protected String nome;
+    protected String nome;        // Nome visível
+    protected int ataque;         // Ataque base
+    protected int defesa;         // Defesa base
+    protected int nivel;          // Nível (pode subir com XP)
+    protected int vida;           // HP atual
+    protected int experiencia;    // XP acumulada
+    protected boolean selvagem;   // true se não tem treinador
+    protected String tipo;        // Água, Terra, Floresta, Elétrico...
+    protected Treinador treinador; // Referência ao dono (ou null se selvagem)
 
-    // Pontos de ataque base (usado no cálculo de dano)
-    protected int ataque;
-
-    // Pontos de defesa base (reduzem o dano recebido)
-    protected int defesa;
-
-    // Nível do Pokémon (do PDF: “treinar seu time de Pokémon” → nível pode aumentar com XP)
-    protected int nivel;
-
-    // Pontos de vida
-    protected int vida;
-
-    // Experiência acumulada (do PDF: “O Pokémon vencedor ganha pontos de experiência”)
-    protected int experiencia;
-
-    // Define se é selvagem ou de treinador (do PDF: “Quando um Pokémon não pertence a algum Treinador...”)
-    protected boolean selvagem;
-
-    // Tipo do Pokémon (ex.: Água, Terra, Elétrico...)
-    protected String tipo;
-
-    // Construtor para inicializar o Pokémon
+    // Construtor base usado pelas subclasses.
     public Pokemon(String nome, int ataque, int defesa, int nivel, int vida, boolean selvagem, String tipo) {
         this.nome = nome;
         this.ataque = ataque;
         this.defesa = defesa;
         this.nivel = nivel;
         this.vida = vida;
-        this.experiencia = 0; // Começa com 0 XP
+        this.experiencia = 0;
         this.selvagem = selvagem;
         this.tipo = tipo;
+        this.treinador = null; // começa sem dono (selvagem) a menos que seja setado
     }
 
-    public Pokemon(String nome, String terra) {
+    public Pokemon(String nome, String eletrico) {
     }
 
-    // Getters e Setters para acessar atributos (boas práticas e encapsulamento)
+    // ========= Getters/Setters essenciais para outras classes =========
+
     public String getNome() { return nome; }
     public String getTipo() { return tipo; }
+
     public boolean isSelvagem() { return selvagem; }
-    public int getVida() { return vida; }
+    public void setSelvagem(boolean selvagem) { this.selvagem = selvagem; }
+
     public int getNivel() { return nivel; }
     public int getExperiencia() { return experiencia; }
 
-    // Método para aumentar experiência (PDF: “O Pokémon vencedor ganha pontos de experiência”)
+    // A Batalha usa getHp(); então fornecemos esse nome.
+    public int getHp() { return vida; }
+    public void setHp(int novoHp) { this.vida = Math.max(0, novoHp); }
+
+    // Vincula o Pokémon a um treinador (usado ao capturar).
+    @Override
+    public Treinador getTreinador() { return treinador; }
+    public void setTreinador(Treinador treinador) { this.treinador = treinador; }
+
+    // ========= Regras de jogo (XP, dano, status) =========
+
+    // Ganha XP; a cada 100 XP sobe 1 nível (simples para o trabalho).
     public void ganharExperiencia(int pontos) {
-        experiencia += pontos;
-        // Regra: a cada 100 XP, sobe 1 nível
-        if (experiencia >= 100) {
-            experiencia -= 100;
-            nivel++;
-            System.out.println(nome + " subiu para o nível " + nivel + "!");
+        this.experiencia += pontos;
+        if (this.experiencia >= 100) {
+            this.experiencia -= 100;
+            this.nivel++;
+            System.out.println(nome + " subiu para o nível " + nivel + ".");
         }
     }
 
-    // Método para receber dano durante batalhas
+    // Aplica dano levando em conta a defesa; vida nunca fica negativa.
     public void receberDano(int dano) {
-        // Dano efetivo é reduzido pela defesa
         int danoEfetivo = Math.max(0, dano - defesa);
-        vida -= danoEfetivo;
-        if (vida < 0) vida = 0; // Não deixar vida negativa
+        this.vida -= danoEfetivo;
+        if (this.vida < 0) this.vida = 0;
     }
 
-    // Verifica se o Pokémon está vivo
-    public boolean estaVivo() {
-        return vida > 0;
-    }
+    // Útil se quiser checar em loops.
+    public boolean estaVivo() { return this.vida > 0; }
 
-    // Método abstrato para cálculo de dano (polimorfismo: cada tipo implementa de forma diferente)
+    // Cada tipo de Pokémon implementa seu cálculo de dano.
     @Override
     public abstract int calcularDano();
 }
