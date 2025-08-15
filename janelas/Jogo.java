@@ -7,12 +7,12 @@ import jogopokemon.pokemons.Pokemon;
 import javax.swing.*;
 import java.awt.*;
 
-public class JanelaJogo extends JFrame {
+public class Jogo extends JFrame {
     private final JButton[][] botoes;
     private final Tabuleiro tabuleiro;
     private final Treinador treinador;
 
-    public JanelaJogo(Tabuleiro tabuleiro, Treinador treinador) {
+    public Jogo(Tabuleiro tabuleiro, Treinador treinador) {
         super("Pokémon GUI Básico");
 
         this.tabuleiro = tabuleiro;

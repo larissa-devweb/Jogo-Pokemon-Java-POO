@@ -13,15 +13,15 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class JanelaPosicoes extends JFrame {
+public class EscolherPosicoes extends JFrame {
     private final Tabuleiro tabuleiro;
     private final JButton[][] botoesTabuleiro;
     private final ArrayList<JButton> botoesPokemons;
     private Pokemon pokemonEscolhido;
     private boolean modoDebug;
 
-    public JanelaPosicoes() {
-        super("Pokémon GUI Básico");
+    public EscolherPosicoes() {
+        super("Distribuir Pokémons");
 
         Tabuleiro tabuleiro = new Tabuleiro(5);
         this.tabuleiro = tabuleiro;
@@ -73,7 +73,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Eletrico("Pikachu"));
+                escolherPokemon(new Eletrico("Pikachu", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -87,7 +87,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Floresta("Bulbasaur"));
+                escolherPokemon(new Floresta("Bulbasaur", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -101,7 +101,7 @@ public class JanelaPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Agua("Squirtle"));
+                escolherPokemon(new Agua("Squirtle", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -175,7 +175,7 @@ public class JanelaPosicoes extends JFrame {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
         // Abrir jogo
-        JanelaJogo jogo = new JanelaJogo(tabuleiro, new Treinador("Ash"));
+        Jogo jogo = new Jogo(tabuleiro, new Treinador("Ash"));
 
         // Inicia thread de movimento automático
         MovimentoAutomatico movimento = new MovimentoAutomatico(tabuleiro, jogo);

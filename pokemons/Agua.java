@@ -8,6 +8,12 @@ package jogopokemon.pokemons;
 import java.util.Random;
 
 public class Agua extends Pokemon {
+    public Agua(String nome, boolean selvagem) {
+        // super() chama o construtor da classe mãe
+        // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem, tipo="Água"
+        super(nome, 8, 5, 1, 100, selvagem, "Água");
+    }
+
     public Agua(String nome) {
         // super() chama o construtor da classe mãe
         // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem=true, tipo="Água"

@@ -43,9 +43,16 @@ public abstract class Pokemon implements IAtaque {
         this.tipo = tipo;
     }
 
+    public Pokemon(String nome, String tipo, boolean selvagem) {
+        this.nome = nome;
+        this.tipo = tipo;
+        this.selvagem = selvagem;
+    }
+
     public Pokemon(String nome, String tipo) {
         this.nome = nome;
         this.tipo = tipo;
+        selvagem = true;
     }
 
     // Getters e Setters para acessar atributos (boas práticas e encapsulamento)

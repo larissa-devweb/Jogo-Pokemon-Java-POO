@@ -1,8 +1,7 @@
 package jogopokemon;
 
-// Importa a classe Pokemon do subpacote "pokemons", igual ao que a sua JanelaJogo usa
+// Importa a classe Pokemon do subpacote "pokemons", igual ao que a Jogo usa
 import jogopokemon.pokemons.Pokemon;
-
 import java.util.ArrayList;
 
 /**
@@ -16,7 +15,7 @@ public class Treinador {
     private ArrayList<Pokemon> mochila;    // Coleção de Pokémon capturados (PDF: “capturar...”)
     private Pokedex pokedex;               // Registro das espécies capturadas (objetivo i: completar Pokédex)
 
-    // Posição do treinador no tabuleiro — requerido pela JanelaJogo (usa get/setLinha/Coluna ao clicar)
+    // Posição do treinador no tabuleiro — requerido pela Jogo (usa get/setLinha/Coluna ao clicar)
     private int linha;                     // Linha atual do treinador na grade
     private int coluna;                    // Coluna atual do treinador na grade
 
@@ -28,15 +27,15 @@ public class Treinador {
         this.nome = nome;                  // Guarda o nome informado
         this.mochila = new ArrayList<>();  // Começa com mochila vazia (coleções em Java)
         this.pokedex = new Pokedex();      // Pokédex vazia (vai registrando espécies)
-        this.linha = 0;                    // Posição inicial (compatível com JanelaJogo)
-        this.coluna = 0;                   // Posição inicial (compatível com JanelaJogo)
+        this.linha = 0;                    // Posição inicial (compatível com Jogo)
+        this.coluna = 0;                   // Posição inicial (compatível com Jogo)
     }
 
     // ===============================
-    // Métodos exigidos pela JanelaJogo
+    // Métodos exigidos pela Jogo
     // ===============================
 
-    /** Retorna a linha atual do treinador na grade (usado pela JanelaJogo). */
+    /** Retorna a linha atual do treinador na grade (usado pela Jogo). */
     public int getLinha() {
         return linha;                      // Necessário para a GUI saber onde desenhar o treinador
     }

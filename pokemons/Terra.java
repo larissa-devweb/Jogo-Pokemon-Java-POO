@@ -7,8 +7,12 @@ package jogopokemon.pokemons;
 import java.util.Random;
 
 public class Terra extends Pokemon {
+    public Terra(String nome, boolean selvagem) {
+        super(nome, "Terra", selvagem);
+    }
+
     public Terra(String nome) {
-        super(nome,"Terra");
+        super(nome, "Terra");
     }
 
     @Override
