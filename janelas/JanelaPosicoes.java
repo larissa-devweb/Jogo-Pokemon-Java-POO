@@ -131,7 +131,10 @@ public class JanelaPosicoes extends JFrame {
 
     private void posicionarPokemon(int linha, int coluna) {
         try {
-            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido, false);
+            if (pokemonEscolhido == null)
+                throw new NullPointerException();
+
+            tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido);
             for (JButton botao : botoesPokemons) {
                 if (!modoDebug)
                     botao.setEnabled(false);
@@ -164,8 +167,8 @@ public class JanelaPosicoes extends JFrame {
     }
 
     private void abrirJogo() {
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"), true);
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"), true);
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"));
 
         // Fechar janela atual sem sair do programa
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

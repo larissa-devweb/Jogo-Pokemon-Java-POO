@@ -13,6 +13,7 @@ public class Agua extends Pokemon {
         // nome, ataque=8, defesa=5, nivel=1, vida=100, selvagem=true, tipo="Água"
         super(nome, 8, 5, 1, 100, true, "Água");
     }
+
     @Override
     public int calcularDano() {
         // Polimorfismo: cálculo diferente para tipo Água

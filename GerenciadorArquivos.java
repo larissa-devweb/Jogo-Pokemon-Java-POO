@@ -19,7 +19,7 @@ public class GerenciadorArquivos {
     // Salva os Pokémon da mochila do treinador no arquivo mochila.txt
     public static void salvarMochila(Treinador treinador) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAMINHO_MOCHILA))) {
-            for (Pokemon p : treinador.getPokemons()) {
+            for (Pokemon p : treinador.getMochila()) {
                 writer.write(p.getNome() + ";" + p.getTipo());
                 writer.newLine();
             }
@@ -46,7 +46,7 @@ public class GerenciadorArquivos {
                     String tipo = partes[1].toLowerCase();
                     Pokemon p = criarPokemonPorTipo(tipo, nome);
                     // p.setSelvagem(false);
-                    if (p != null) treinador.adicionarPokemon(p);
+                    if (p != null) treinador.adicionarPokemonNaMochila(p);
                 }
             }
             System.out.println("Mochila carregada com sucesso.");

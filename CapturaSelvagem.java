@@ -28,7 +28,7 @@ public class CapturaSelvagem {
         // Se a chance for menor que 0.5, a captura é bem-sucedida
         if (chance < 0.5) {
             // Adiciona o Pokémon à mochila do treinador
-            treinador.adicionarPokemon(pokemon);
+            treinador.adicionarPokemonNaMochila(pokemon);
 
             // Remove o Pokémon do tabuleiro
             tabuleiro.removerPokemon(linha, coluna);

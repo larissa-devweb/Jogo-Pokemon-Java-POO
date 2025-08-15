@@ -4,12 +4,6 @@
  */
 package jogopokemon.pokemons;
 
-
-// Interface de ataque (do PDF: “Pokémons podem batalhar”, precisamos de um contrato para o ataque)
-public interface IAtaque {
-    int calcularDano(); // Qualquer Pokémon deve saber calcular seu dano
-}
-
 // Classe abstrata para representar qualquer Pokémon (do PDF: “Pokémons têm tipos e características”)
 public abstract class Pokemon implements IAtaque {
 
@@ -49,7 +43,9 @@ public abstract class Pokemon implements IAtaque {
         this.tipo = tipo;
     }
 
-    public Pokemon(String nome, String terra) {
+    public Pokemon(String nome, String tipo) {
+        this.nome = nome;
+        this.tipo = tipo;
     }
 
     // Getters e Setters para acessar atributos (boas práticas e encapsulamento)

@@ -46,7 +46,7 @@ public class MovimentoAutomatico extends Thread {
 
                     tabuleiro.removerPokemon(linha, coluna);
                     try {
-                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, true);
+                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p);
                         System.out.println(p.getNome() + " se moveu para [" + novaLinha + "," + novaColuna + "]");
                         gui.atualizarTabuleiro(); // atualiza interface
                     } catch (RegiaoInvalidaException e) {
