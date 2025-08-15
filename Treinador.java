@@ -1,64 +1,69 @@
 package jogopokemon;
 
-import java.util.ArrayList;
 import jogopokemon.pokemons.Pokemon;
 
-/**
- * ✔ Adicionados mochila, time e pontuação, get/set de posição.
- * ✔ Criados 'adicionarPokemon' e também 'adicionarPokemonNaMochila' (alias)
- *   para compatibilizar com chamadas antigas.
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Treinador {
     private String nome;
+    private List<Pokemon> time;
+    private List<Pokemon> mochila;
+    private int pontuacao;
     private int linha;
     private int coluna;
 
-    private int pontuacao;                 // pontuação do time
-    private final ArrayList<Pokemon> time; // time ativo
-    private final ArrayList<Pokemon> mochila; // capturados
-
     public Treinador(String nome) {
         this.nome = nome;
-        this.linha = 0;
-        this.coluna = 0;
-        this.pontuacao = 0;
         this.time = new ArrayList<>();
         this.mochila = new ArrayList<>();
+        this.pontuacao = 0;
     }
 
     public String getNome() { return nome; }
     public int getLinha() { return linha; }
     public int getColuna() { return coluna; }
-    public void setLinha(int linha) { this.linha = linha; }
-    public void setColuna(int coluna) { this.coluna = coluna; }
+    public void setLinha(int l) { linha = l; }
+    public void setColuna(int c) { coluna = c; }
 
-    public int getPontuacao() { return pontuacao; }
-    public void adicionarPontuacao(int xp) { this.pontuacao += xp; }
-
-    public ArrayList<Pokemon> getTime() { return time; }
-    public ArrayList<Pokemon> getMochila() { return mochila; }
-
-    // ✔ método esperado pela captura
-    public void adicionarPokemon(Pokemon p) {
-        mochila.add(p);
-        time.add(p);
-        System.out.println(nome + " adicionou " + p.getNome() + " à mochila/time.");
+    // NOVO: capturar Pokémon selvagem
+    public boolean capturarPokemon(Pokemon p) {
+        if (p.isSelvagem()) {
+            p.setTreinador(this);
+            mochila.add(p);
+            time.add(p);
+            return true;
+        }
+        return false;
     }
 
-    // ✔ alias para compatibilizar código legado
-    public void adicionarPokemonNaMochila(Pokemon p) {
-        adicionarPokemon(p);
+    // NOVO: batalha entre dois pokémons
+    public Pokemon batalhar(Pokemon p1, Pokemon p2) {
+        while (!p1.estaDerrotado() && !p2.estaDerrotado()) {
+            int dano1 = p1.calcularDano();
+            p2.receberDano(dano1);
+
+            if (!p2.estaDerrotado()) {
+                int dano2 = p2.calcularDano();
+                p1.receberDano(dano2);
+            }
+        }
+
+        if (p1.estaDerrotado()) {
+            p2.ganharExperiencia(50);
+            pontuacao += 50;
+            return p2;
+        } else {
+            p1.ganharExperiencia(50);
+            pontuacao += 50;
+            return p1;
+        }
     }
 
-    public void mostrarMochila() {
-        if (mochila.isEmpty()) {
-            System.out.println("Mochila vazia.");
-            return;
-        }
-        System.out.println("Mochila de " + nome + ":");
-        for (Pokemon p : mochila) {
-            System.out.println("- " + p.getNome() + " (Tipo " + p.getTipo()
-                    + ", Nível " + p.getNivel() + ", HP " + p.getHp() + ")");
-        }
+    // NOVO: computador escolhe célula aleatória
+    public int[] escolherCelula(int max) {
+        Random r = new Random();
+        return new int[]{r.nextInt(max), r.nextInt(max)};
     }
 }

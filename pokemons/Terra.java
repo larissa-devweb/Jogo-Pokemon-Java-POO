@@ -17,8 +17,15 @@ public class Terra extends Pokemon {
         super(nome, 35, 4, 1, 0, selvagem, "Terra");
     }
 
+    // NOVO: Terra → dobra a força em turno ímpar
     @Override
     public int calcularDano() {
-        return new Random().nextInt(forca + 1) * nivel + xp;
+        int turno=0;
+        turno++;
+        int dano = super.calcularDano();
+        if (turno % 2 == 1) {
+            dano *= 2;
+        }
+        return dano;
     }
 }

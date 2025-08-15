@@ -16,9 +16,11 @@ public class Floresta extends Pokemon {
     public Floresta(String nome, boolean selvagem) {
         super(nome, 28, 6, 1, 0, selvagem, "Floresta");
     }
-
+    // NOVO: Floresta → regenera 10% da energia ao atacar
     @Override
     public int calcularDano() {
-        return new Random().nextInt(forca + 1) * nivel + xp;
+        int dano = super.calcularDano();
+        this.energia += (int)(dano * 0.1);
+        return dano;
     }
 }

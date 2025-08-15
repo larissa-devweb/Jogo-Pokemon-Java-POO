@@ -22,13 +22,14 @@ public class Agua extends Pokemon {
     @Override
     public int calcularDano() {
         // Exemplo do PDF: random(força) * nível + xp
+        int xp = 0;
         return new Random().nextInt(forca + 1) * nivel + xp;
     }
 
+    // NOVO: Água → reduz dano recebido (simulação: -20%)
     @Override
     public void receberDano(int dano) {
-        // ✔ redução ~30%
-        int reduzido = (int) Math.ceil(dano * 0.7);
-        super.receberDano(reduzido);
+        super.receberDano((int)(dano * 0.8));
     }
 }
+

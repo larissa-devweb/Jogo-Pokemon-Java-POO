@@ -2,6 +2,8 @@ package jogopokemon;
 
 import jogopokemon.pokemons.*;
 
+import java.util.ArrayList;
+
 public class Tabuleiro {
     private final Pokemon[][] grid;
     private final int tamanho;
@@ -16,7 +18,7 @@ public class Tabuleiro {
     }
 
     // NOVO: método que posiciona Pokémon somente na região correta
-    public void posicionarPokemon(int linha, int coluna, Pokemon p) throws RegiaoInvalidaException {
+    public void posicionarPokemon(int linha, int coluna, Pokemon p, boolean b) throws RegiaoInvalidaException {
         if (!pertenceRegiao(linha, coluna, p)) {
             throw new RegiaoInvalidaException("Pokémon " + p.getNome() + " não pode ser colocado nessa região!");
         }
@@ -41,5 +43,14 @@ public class Tabuleiro {
         if (linha >= meio && coluna >= meio && p.getTipo().equals("Elétrico")) return true;// Região Elétrico
 
         return false;
+    }
+
+    public void posicionarPokemon(int i, int i1, Agua squirtle, boolean b) {
+    }
+
+    public void posicionarPokemon(int i, int i1, Eletrico pikachu, boolean b) {
+    }
+
+    public ArrayList<Pokemon> listarPokemonsSelvagens() {
     }
 }

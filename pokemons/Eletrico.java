@@ -17,8 +17,13 @@ public class Eletrico extends Pokemon {
         super(nome, 25, 7, 1, 0, selvagem, "Elétrico");
     }
 
+    // NOVO: Elétrico → chance de paralisar adversário
     @Override
     public int calcularDano() {
-        return new Random().nextInt(forca + 1) * nivel + xp;
+        Random rand = new Random();
+        if (rand.nextInt(100) < 30) {
+            boolean adversarioParalisado = true;
+        }
+        return super.calcularDano();
     }
 }

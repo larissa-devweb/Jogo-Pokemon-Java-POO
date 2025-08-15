@@ -69,14 +69,14 @@ public class JogoPokemon {
                         System.out.println("Escolha um Pokémon para capturar:");
                         for (int i = 0; i < selvagens.size(); i++) {
                             Pokemon p = selvagens.get(i);
-                            int[] pos = tabuleiro.getPosicaoDoPokemon(p);
+                            int[] pos = tabuleiro.posicionarPokemon(p);
                             System.out.println(i + " - " + p.getNome() + " (" + p.getTipo() + ") em [" + pos[0] + "," + pos[1] + "]");
                         }
                         System.out.print("Número do Pokémon: ");
                         int escolha = scanner.nextInt();
                         if (escolha >= 0 && escolha < selvagens.size()) {
                             Pokemon escolhido = selvagens.get(escolha);
-                            int[] pos = tabuleiro.getPosicaoDoPokemon(escolhido);
+                            int[] pos = tabuleiro.posicionarPokemon(escolhido);
                             CapturaSelvagem.tentarCaptura(escolhido, tabuleiro, pos[0], pos[1], treinadorJogador);
                         } else {
                             System.out.println("Escolha inválida.");
