@@ -1,124 +1,141 @@
 package jogopokemon.janelas;
 
 import jogopokemon.*;
-import jogopokemon.pokemons.Agua;
-import jogopokemon.pokemons.Eletrico;
-import jogopokemon.pokemons.Floresta;
+import jogopokemon.pokemons.*;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.Random;
 
 public class Jogo extends JFrame {
+    private final int tamanho = 6; // tamanho do tabuleiro
     private final Tabuleiro tabuleiro;
     private final Treinador jogador;
     private final Treinador computador;
-    private final JButton[][] botoesTabuleiro;
+    private final JButton[][] botoes;
+    private final JLabel status;
 
-    public Jogo(Tabuleiro tabuleiro, Treinador jogador) {
-        super("Pokémon - Jogo");
-
-        this.tabuleiro = tabuleiro;
-        this.jogador = jogador;
+    public Jogo(Tabuleiro tabuleiro, Treinador ash) {
+        super("Jogo Pokémon - POO 2025/1");
+        this.tabuleiro = new Tabuleiro(tamanho);
+        this.jogador = new Treinador("Ash");
         this.computador = new Treinador("Computador");
+        this.botoes = new JButton[tamanho][tamanho];
+        this.status = new JLabel("Sua vez!");
 
-        int tamanho = tabuleiro.getTamanho();
-        botoesTabuleiro = new JButton[tamanho][tamanho];
+        inicializarPokemons();
+        inicializarGUI();
+        iniciarMovimentoComputador();
 
-        setLayout(new GridLayout(tamanho, tamanho));
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(600, 650);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
 
+    private void inicializarPokemons() {
+        // Pokémon inicial do jogador
+        Pokemon p1 = new Agua("Squirtle", false);
+        jogador.adicionarPokemon(p1);
+        tabuleiro.posicionarPokemonAleatoriamente(p1);
+        p1.setTreinador(jogador);
+
+        // Pokémon do computador
+        Pokemon pc1 = new Terra("Sandshrew", false);
+        computador.adicionarPokemon(pc1);
+        tabuleiro.posicionarPokemonAleatoriamente(pc1);
+        pc1.setTreinador(computador);
+
+        // Selvagens
+        Random rnd = new Random();
+        String[] tipos = {"agua", "floresta", "terra", "eletrico"};
+        for (int i = 0; i < 8; i++) {
+            String tipo = tipos[rnd.nextInt(tipos.length)];
+            Object JogoPokemon = null;
+            //Pokemon ps = JogoPokemon.criarPokemon(tipo, tipo + i, true);
+          //  tabuleiro.posicionarPokemonAleatoriamente(ps);
+        }
+    }
+
+    private void inicializarGUI() {
+        setLayout(new BorderLayout());
+        JPanel panelTabuleiro = new JPanel(new GridLayout(tamanho, tamanho));
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                JButton botao = new JButton("Vazio");
-                botoesTabuleiro[i][j] = botao;
+                JButton btn = new JButton("");
                 final int linha = i;
                 final int coluna = j;
-
-                botao.addActionListener(e -> clicarCelula(linha, coluna));
-
-                add(botao);
+                btn.addActionListener(e -> clicarCelula(linha, coluna));
+                botoes[i][j] = btn;
+                panelTabuleiro.add(btn);
             }
         }
 
-        setSize(600,600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-
+        add(panelTabuleiro, BorderLayout.CENTER);
+        add(status, BorderLayout.SOUTH);
         atualizarTabuleiro();
-
-        // Inicia Thread do computador
-        JogadorComputador cpu = new JogadorComputador(tabuleiro, computador, (IAtaque) jogador);
-        cpu.start();
     }
 
     private void clicarCelula(int linha, int coluna) {
         Pokemon p = tabuleiro.getPokemon(linha, coluna);
         if (p == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum Pokémon nesta célula.");
+            status.setText("Nenhum Pokémon aqui!");
+            botoes[linha][coluna].setText("-");
             return;
         }
 
         if (p.isSelvagem()) {
-            JOptionPane.showMessageDialog(this, "Pokémon selvagem encontrado: " + p.getNome());
+            // Captura Pokémon
+            p.setSelvagem(false);
             jogador.adicionarPokemon(p);
-            tabuleiro.removerPokemon(linha, coluna);
-            checkFimJogo();
+            p.setTreinador(jogador);
+            jogador.adicionarPontuacao(10);
+            status.setText("Você capturou " + p.getNome() + "! +10 pontos");
         } else {
-            JOptionPane.showMessageDialog(this, "Este Pokémon pertence a outro treinador!");
-            // Aqui você poderia implementar batalha
+            // Batalha
+            Pokemon meu = jogador.getPokemons().get(0);
+            Batalha2Pokemons.iniciarBatalha(meu, p);
+            status.setText("Batalha realizada!");
         }
 
         atualizarTabuleiro();
+        verificarFimJogo();
     }
 
     public void atualizarTabuleiro() {
-        for (int i = 0; i < tabuleiro.getTamanho(); i++) {
-            for (int j = 0; j < tabuleiro.getTamanho(); j++) {
-                Pokemon p = tabuleiro.getPokemon(i,j);
-                if (p != null && !p.isSelvagem() && p.getTreinador() == jogador)
-                    botoesTabuleiro[i][j].setText(p.getNome());
-                else if (p != null)
-                    botoesTabuleiro[i][j].setText("???");
-                else
-                    botoesTabuleiro[i][j].setText("Vazio");
+        for (int i = 0; i < tamanho; i++) {
+            for (int j = 0; j < tamanho; j++) {
+                Pokemon p = tabuleiro.getPokemon(i, j);
+                if (p == null) botoes[i][j].setText("");
+                else if (!p.isSelvagem()) botoes[i][j].setText(p.getNome().substring(0,1));
+                else botoes[i][j].setText("?");
             }
         }
     }
 
-    private void checkFimJogo() {
+    private void iniciarMovimentoComputador() {
+        new Thread(() -> {
+            Random rnd = new Random();
+            while (tabuleiro.temPokemonsSelvagens()) {
+                try { Thread.sleep(4000); } catch (InterruptedException ignored) {}
+                int l = rnd.nextInt(tamanho);
+                int c = rnd.nextInt(tamanho);
+                Pokemon p = tabuleiro.getPokemon(l, c);
+                if (p != null && p.isSelvagem()) {
+                    p.setSelvagem(false);
+                    computador.adicionarPokemon(p);
+                    computador.adicionarPontuacao(10);
+                    atualizarTabuleiro();
+                }
+            }
+        }).start();
+    }
+
+    private void verificarFimJogo() {
         if (!tabuleiro.temPokemonsSelvagens()) {
-            String vencedor;
-            if (jogador.getPontuacao() >= computador.getPontuacao())
-                vencedor = jogador.getNome();
-            else
-                vencedor = computador.getNome();
-
+            String vencedor = (jogador.getPontuacao() >= computador.getPontuacao()) ? jogador.getNome() : computador.getNome();
             JOptionPane.showMessageDialog(this, "Fim de jogo! Vencedor: " + vencedor);
-            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-    }
-
-    // Inicializa Pokémon de Ash + selvagens
-    public static void inicializar(Tabuleiro tabuleiro, Treinador jogador) {
-        // Ash começa com 1 Pokémon
-        Pokemon inicial = new Eletrico("Pikachu", false);
-        jogador.adicionarPokemon(inicial);
-        tabuleiro.posicionarPokemonAleatoriamente(inicial);
-
-        // Selvagens
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Squirtle", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Floresta("Bulbasaur", true));
-    }
-
-    // Main para teste
-    public static void main(String[] args) {
-        Tabuleiro tabuleiro = new Tabuleiro(5);
-        Treinador jogador = new Treinador("Ash");
-        inicializar(tabuleiro, jogador);
-
-        new Jogo(tabuleiro, jogador);
     }
 }

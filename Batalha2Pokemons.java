@@ -14,7 +14,7 @@ public class Batalha2Pokemons {
         while (p1.getHp() > 0 && p2.getHp() > 0) {
 
             // TURNO P1
-            if (p1.estaParalisado()) {
+            if (p1.isParalisado()) {
                 System.out.println(p1.getNome() + " está paralisado e perde o turno.");
                 p1.paralisar();
             } else {
@@ -32,7 +32,7 @@ public class Batalha2Pokemons {
             turno++;
 
             // TURNO P2
-            if (p2.estaParalisado()) {
+            if (p2.isParalisado()) {
                 System.out.println(p2.getNome() + " está paralisado e perde o turno.");
                 p2.paralisar();
             } else {

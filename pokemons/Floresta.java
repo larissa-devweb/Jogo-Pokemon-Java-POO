@@ -28,4 +28,9 @@ public class Floresta extends Pokemon {
 
         return dano;
     }
+
+    @Override
+    public int atacar(Pokemon alvo, int turno) {
+        return 0;
+    }
 }

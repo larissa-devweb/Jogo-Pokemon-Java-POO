@@ -6,6 +6,7 @@ public class Treinador {
     private String nome;
     private ArrayList<Pokemon> pokemons;
     private int pontuacao;
+    private Pokedex pokedex;
     private int linha, coluna;
 
     public Treinador(String nome) {
@@ -62,5 +63,9 @@ public class Treinador {
     // Retorna os Pokémons como um array, representando a “mochila” do treinador
     public Pokemon[] getMochila() {
         return pokemons.toArray(new Pokemon[0]);
+    }
+
+    public Pokedex getPokedex() {
+        return pokedex;
     }
 }

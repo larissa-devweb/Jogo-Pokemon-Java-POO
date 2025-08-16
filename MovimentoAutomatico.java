@@ -13,21 +13,29 @@ public class MovimentoAutomatico extends Thread {
 
     @Override
     public void run() {
-        while (tabuleiro.temPokemonsSelvagens()) {
-            try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
+        while (tabuleiro.temPokemonsSelvagens()) { // corrige aqui
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ignored) {}
 
-            int linha = (int)(Math.random()*tabuleiro.getTamanho());
-            int coluna = (int)(Math.random()*tabuleiro.getTamanho());
+            int linha = (int)(Math.random() * tabuleiro.getTamanho());
+            int coluna = (int)(Math.random() * tabuleiro.getTamanho());
             Pokemon p = tabuleiro.getPokemon(linha, coluna);
 
             if (p != null && p.isSelvagem()) {
-                int novaLinha = linha + (int)(Math.random()*3)-1;
-                int novaColuna = coluna + (int)(Math.random()*3)-1;
-                if (novaLinha>=0 && novaLinha<tabuleiro.getTamanho() && novaColuna>=0 && novaColuna<tabuleiro.getTamanho()
-                        && tabuleiro.getPokemon(novaLinha,novaColuna)==null) {
+                int novaLinha = linha + (int)(Math.random() * 3) - 1;
+                int novaColuna = coluna + (int)(Math.random() * 3) - 1;
+
+                if (novaLinha >= 0 && novaLinha < tabuleiro.getTamanho() &&
+                        novaColuna >= 0 && novaColuna < tabuleiro.getTamanho() &&
+                        tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
+
                     tabuleiro.removerPokemon(linha, coluna);
-                    try { tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, false); }
-                    catch (RegiaoInvalidaException ignored) {}
+
+                    try {
+                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, false);
+                    } catch (RegiaoInvalidaException ignored) {}
+
                     if (gui != null) gui.atualizarTabuleiro();
                 }
             }
