@@ -3,7 +3,6 @@ package jogopokemon.janelas;
 import jogopokemon.*;
 import jogopokemon.pokemons.*;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
@@ -53,8 +52,8 @@ public class Jogo extends JFrame {
         for (int i = 0; i < 8; i++) {
             String tipo = tipos[rnd.nextInt(tipos.length)];
             Object JogoPokemon = null;
-            //Pokemon ps = JogoPokemon.criarPokemon(tipo, tipo + i, true);
-          //  tabuleiro.posicionarPokemonAleatoriamente(ps);
+            // Pokemon ps = JogoPokemon.criarPokemon(tipo, tipo + i, true);
+            // tabuleiro.posicionarPokemonAleatoriamente(ps);
         }
     }
 
@@ -94,7 +93,7 @@ public class Jogo extends JFrame {
             status.setText("Você capturou " + p.getNome() + "! +10 pontos");
         } else {
             // Batalha
-            Pokemon meu = jogador.getPokemons().get(0);
+            Pokemon meu = jogador.getPokemons().getFirst();
             Batalha2Pokemons.iniciarBatalha(meu, p);
             status.setText("Batalha realizada!");
         }

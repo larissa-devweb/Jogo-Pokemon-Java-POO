@@ -1,5 +1,8 @@
 package jogopokemon;
 
+import jogopokemon.excecoes.NenhumaPosicaoDisponivelException;
+import jogopokemon.excecoes.RegiaoInvalidaException;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,30 +20,32 @@ public class Tabuleiro {
 
     public Pokemon getPokemon(int linha, int coluna) { return grid[linha][coluna]; }
 
-    public void posicionarPokemon(int linha, int coluna, Pokemon p, boolean setTreinador)
-            throws RegiaoInvalidaException {
+    public void posicionarPokemon(int linha, int coluna, Pokemon p, boolean setTreinador)  {
         if (!regiaoValida(p.getTipo(), linha, coluna))
             throw new RegiaoInvalidaException("Pokémon do tipo " + p.getTipo() + " não pode ser colocado nessa região!");
+
         grid[linha][coluna] = p;
-        if (setTreinador) p.setTreinador(null);
+        if (setTreinador)
+            p.setTreinador(null);
+
         p.setEmAmbienteAdverso(false);
     }
 
     private boolean regiaoValida(String tipo, int linha, int coluna) {
         int n = tamanho;
-        switch (tipo.toLowerCase()) {
-            case "agua":       return linha >= 0 && linha < n/2 && coluna >= 0 && coluna < n/2;
-            case "floresta":   return linha >= 0 && linha < n/2 && coluna >= n/2 && coluna < n;
-            case "terra":      return linha >= n/2 && linha < n && coluna >= 0 && coluna < n/2;
-            case "eletrico":   return linha >= n/2 && linha < n && coluna >= n/2 && coluna < n;
-            default: return true;
-        }
+        return switch (tipo.toLowerCase()) {
+            case "agua" -> linha >= 0 && linha < n / 2 && coluna >= 0 && coluna < n / 2;
+            case "floresta" -> linha >= 0 && linha < n / 2 && coluna >= n / 2 && coluna < n;
+            case "terra" -> linha >= n / 2 && linha < n && coluna >= 0 && coluna < n / 2;
+            case "eletrico" -> linha >= n / 2 && linha < n && coluna >= n / 2 && coluna < n;
+            default -> true;
+        };
     }
 
     public void removerPokemon(int linha, int coluna) { grid[linha][coluna] = null; }
 
     // ========== Novo método ==========
-    public boolean posicionarPokemonAleatoriamente(Pokemon p) {
+    public void posicionarPokemonAleatoriamente(Pokemon p) {
         ArrayList<int[]> possiveis = new ArrayList<>();
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
@@ -50,12 +55,13 @@ public class Tabuleiro {
             }
         }
 
-        if (possiveis.isEmpty()) return false; // nenhuma posição disponível
+        if (possiveis.isEmpty())
+            throw new NenhumaPosicaoDisponivelException("Nenhuma posição disponível para o Pokemón" + p.getNome());
 
         int[] pos = possiveis.get(rnd.nextInt(possiveis.size()));
         grid[pos[0]][pos[1]] = p;
+
         p.setEmAmbienteAdverso(false);
-        return true;
     }
 
     // Método de debug: imprime tabuleiro
@@ -65,6 +71,7 @@ public class Tabuleiro {
                 if (grid[i][j] == null) System.out.print("[   ] ");
                 else System.out.print("[" + grid[i][j].getTipo().charAt(0) + "] ");
             }
+
             System.out.println();
         }
     }
@@ -77,6 +84,7 @@ public class Tabuleiro {
                 if (p != null && p.isSelvagem()) return true;
             }
         }
+
         return false;
     }
     // Retorna um Pokémon selvagem aleatório do tabuleiro
@@ -90,10 +98,10 @@ public class Tabuleiro {
                 }
             }
         }
-        if (selvagens.isEmpty()) return null;
+
+        if (selvagens.isEmpty())
+            return null;
+
         return selvagens.get(new Random().nextInt(selvagens.size()));
     }
-
-
-
 }

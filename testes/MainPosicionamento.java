@@ -1,6 +1,7 @@
 package jogopokemon.testes;
 
 import jogopokemon.*;
+import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.pokemons.*;
 
 import java.util.Scanner;

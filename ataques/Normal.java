@@ -1,7 +1,10 @@
-package jogopokemon;
+package jogopokemon.ataques;
+
+import jogopokemon.IAtaque;
+import jogopokemon.Pokemon;
 
 // Ataque normal básico
-public class AtaqueNormal implements IAtaque {
+public class Normal implements IAtaque {
 
     @Override
     public int atacar(Pokemon alvo, int turno) {

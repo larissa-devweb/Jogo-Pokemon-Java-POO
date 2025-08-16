@@ -1,7 +1,10 @@
-package jogopokemon;
+package jogopokemon.ataques;
+
+import jogopokemon.IAtaque;
+import jogopokemon.Pokemon;
 
 // Ataque específico baseado no tipo do Pokémon
-public class AtaqueTipo implements IAtaque {
+public class Tipo implements IAtaque {
 
     @Override
     public int atacar(Pokemon alvo, int turno) {

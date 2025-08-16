@@ -1,5 +1,6 @@
 package jogopokemon;
 
+import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.janelas.Jogo;
 
 public class MovimentoAutomatico extends Thread {

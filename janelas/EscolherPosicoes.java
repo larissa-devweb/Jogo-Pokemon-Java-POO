@@ -1,7 +1,7 @@
 package jogopokemon.janelas;
 
 import jogopokemon.MovimentoAutomatico;
-import jogopokemon.RegiaoInvalidaException;
+import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.Tabuleiro;
 import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class EscolherPosicoes extends JFrame {
     private final Tabuleiro tabuleiro;
@@ -32,12 +31,15 @@ public class EscolherPosicoes extends JFrame {
         // Painel do tabuleiro (grade)
         JPanel painelGrid = new JPanel(new GridLayout(tamanho, tamanho, 4, 4));
         botoesTabuleiro = new JButton[tamanho][tamanho];
+
         for (int linha = 0; linha < tamanho; linha++) {
             for (int coluna = 0; coluna < tamanho; coluna++) {
                 JButton botao = new JButton("Vazio");
                 botoesTabuleiro[linha][coluna] = botao;
+
                 final int l = linha;
                 final int c = coluna;
+
                 botao.addActionListener(e -> posicionarPokemon(l, c));
                 painelGrid.add(botao);
             }
@@ -90,12 +92,16 @@ public class EscolherPosicoes extends JFrame {
         setVisible(true);
     }
 
+    // habilita só o botão "Jogar" e mantém visual
+    // (o clique no grid vai posicionar e depois reabilitar os botões)
     private void escolherPokemon(Pokemon pokemon) {
-        // desabilita botões enquanto escolhe (modo simples)
-        for (JButton b : botoesPokemons) b.setEnabled(false);
+        // desabilita botões de outros pokémons enquanto escolhe (modo simples)
+        for (JButton b : botoesPokemons) {
+            if (!b.getText().equals(pokemon.getNome()))
+                b.setEnabled(false);
+        }
+
         pokemonEscolhido = pokemon;
-        // habilita só o botão "Jogar" e mantem visual
-        // (o clique no grid vai posicionar e depois reabilitar os botões)
     }
 
     private void posicionarPokemon(int linha, int coluna) {
@@ -110,8 +116,10 @@ public class EscolherPosicoes extends JFrame {
 
             // atualiza estado dos botões: se não for modoDebug, remove a opção
             for (JButton botao : botoesPokemons) {
-                if (!modoDebug) botao.setEnabled(false);
-                else botao.setEnabled(!pokemonEscolhido.getNome().equals(botao.getText()));
+                if (!modoDebug)
+                    botao.setEnabled(false);
+                else
+                    botao.setEnabled(!pokemonEscolhido.getNome().equals(botao.getText()));
             }
 
             // remove a opção da lista para não poder posicionar o mesmo duas vezes
@@ -125,8 +133,10 @@ public class EscolherPosicoes extends JFrame {
             pokemonEscolhido = null;
             // reabilita botões (modo debug mantém alguns habilitados acima)
             if (!modoDebug) {
-                for (JButton b : botoesPokemons) b.setEnabled(true);
+                for (JButton b : botoesPokemons)
+                    b.setEnabled(true);
             }
+
             atualizarTabuleiro();
         }
     }
@@ -144,38 +154,10 @@ public class EscolherPosicoes extends JFrame {
         }
     }
 
-    /**
-     * Posiciona Pokémons aleatoriamente no tabuleiro, respeitando regiões.
-     * Usa tentativa aleatória com limite de tentativas para evitar loop infinito.
-     */
-    private void posicionarAleatorio(Pokemon p) {
-        Random rnd = new Random();
-        int tamanho = tabuleiro.getTamanho();
-        int tentativas = 0;
-        boolean colocado = false;
-        while (!colocado && tentativas < tamanho * tamanho * 4) {
-            int l = rnd.nextInt(tamanho);
-            int c = rnd.nextInt(tamanho);
-            if (tabuleiro.getPokemon(l, c) == null) {
-                try {
-                    tabuleiro.posicionarPokemon(l, c, p, true);
-                    colocado = true;
-                } catch (RegiaoInvalidaException ignored) {
-                    // região inválida, tenta outra posição
-                }
-            }
-            tentativas++;
-        }
-        if (!colocado) {
-            System.out.println("Não foi possível posicionar " + p.getNome() + " aleatoriamente.");
-        }
-        atualizarTabuleiro();
-    }
-
     private void abrirJogo() {
         // Posiciona alguns pokémons aleatoriamente usando o helper local
-        posicionarAleatorio(new Agua("Psyduck", true));
-        posicionarAleatorio(new Eletrico("Raichu", true));
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", true));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", true));
 
         // Fecha a janela atual (sem encerrar o programa)
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
