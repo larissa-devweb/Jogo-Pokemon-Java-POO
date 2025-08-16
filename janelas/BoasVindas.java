@@ -54,6 +54,6 @@ public class BoasVindas extends JFrame {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
         // Abrir janela de definir posições
-        new PosicoesAleatorias();
+        PosicoesAleatorias posicoesAleatorias = new PosicoesAleatorias();
     }
 }

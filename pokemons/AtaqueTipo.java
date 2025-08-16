@@ -1,5 +1,6 @@
 package jogopokemon.pokemons;
 
+import jogopokemon.IAtaque;
 import jogopokemon.Pokemon;
 
 import java.util.Random;

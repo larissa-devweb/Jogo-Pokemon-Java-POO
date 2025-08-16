@@ -16,7 +16,7 @@ public class Batalha2Pokemons {
             // TURNO P1
             if (p1.estaParalisado()) {
                 System.out.println(p1.getNome() + " está paralisado e perde o turno.");
-                p1.tickParalisia();
+                p1.paralisar();
             } else {
                 int dano = p1.atacar(p2, turno);
                 System.out.println(p1.getNome() + " causou " + dano + ". "
@@ -34,7 +34,7 @@ public class Batalha2Pokemons {
             // TURNO P2
             if (p2.estaParalisado()) {
                 System.out.println(p2.getNome() + " está paralisado e perde o turno.");
-                p2.tickParalisia();
+                p2.paralisar();
             } else {
                 int dano = p2.atacar(p1, turno);
                 System.out.println(p2.getNome() + " causou " + dano + ". "
