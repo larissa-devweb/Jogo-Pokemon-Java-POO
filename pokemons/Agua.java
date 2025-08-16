@@ -1,4 +1,5 @@
 package jogopokemon.pokemons;
+//package jogopokemon;
 
 import java.util.Random;
 
@@ -11,18 +12,20 @@ public class Agua extends Pokemon {
 
     // ✔ construtor básico (selvagem por padrão)
     public Agua(String nome) {
-        super(nome, 30, 5, 1, 0, true, "Água");
+    super(nome, 30, 5, 1, 0, true, "Água");
     }
 
     // ✔ construtor opcional usado por loaders que querem definir selvagem/dono
     public Agua(String nome, boolean selvagem) {
-        super(nome, 30, 5, 1, 0, selvagem, "Água");
+        super(nome,30, 5, 1, 0,  selvagem, "Água");
     }
 
     @Override
     public int calcularDano() {
         // Exemplo do PDF: random(força) * nível + xp
         int xp = 0;
+        int forca = 0;
+        int nivel = 0;
         return new Random().nextInt(forca + 1) * nivel + xp;
     }
 
@@ -30,6 +33,11 @@ public class Agua extends Pokemon {
     @Override
     public void receberDano(int dano) {
         super.receberDano((int)(dano * 0.8));
+    }
+
+    @Override
+    public int atacar(Pokemon alvo) {
+        return 0;
     }
 }
 

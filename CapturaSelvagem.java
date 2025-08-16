@@ -1,7 +1,7 @@
 package jogopokemon;
 
 import java.util.Random;
-import jogopokemon.pokemons.Pokemon;
+
 
 /**
  * Captura simples:
@@ -17,7 +17,7 @@ public class CapturaSelvagem {
             treinador.adicionarPokemon(pokemon); // ✔ método agora existe
             pokemon.setSelvagem(false);
             pokemon.setTreinador(treinador);
-            tabuleiro.removerPokemon(linha, coluna);
+            tabuleiro.getPokemon(linha, coluna);
             System.out.println(pokemon.getNome() + " foi capturado!");
             return true;
         } else {

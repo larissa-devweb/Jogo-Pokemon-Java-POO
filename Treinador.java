@@ -1,69 +1,54 @@
 package jogopokemon;
 
-import jogopokemon.pokemons.Pokemon;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Treinador {
-    private String nome;
-    private List<Pokemon> time;
-    private List<Pokemon> mochila;
-    private int pontuacao;
-    private int linha;
-    private int coluna;
+    private final String nome;
+    private final ArrayList<Pokemon> mochila;
+    private final ArrayList<Pokemon> time;
+    private final int pontuacao;
 
     public Treinador(String nome) {
         this.nome = nome;
-        this.time = new ArrayList<>();
         this.mochila = new ArrayList<>();
+        this.time = new ArrayList<>();
         this.pontuacao = 0;
     }
 
-    public String getNome() { return nome; }
-    public int getLinha() { return linha; }
-    public int getColuna() { return coluna; }
-    public void setLinha(int l) { linha = l; }
-    public void setColuna(int c) { coluna = c; }
-
-    // NOVO: capturar Pokémon selvagem
+    // Capturar Pokémon selvagem
     public boolean capturarPokemon(Pokemon p) {
         if (p.isSelvagem()) {
-            p.setTreinador(this);
             mochila.add(p);
             time.add(p);
+            p.setSelvagem(false);
+            System.out.println(nome + " capturou " + p.getNome() + "!");
             return true;
         }
         return false;
     }
 
-    // NOVO: batalha entre dois pokémons
-    public Pokemon batalhar(Pokemon p1, Pokemon p2) {
-        while (!p1.estaDerrotado() && !p2.estaDerrotado()) {
-            int dano1 = p1.calcularDano();
-            p2.receberDano(dano1);
-
-            if (!p2.estaDerrotado()) {
-                int dano2 = p2.calcularDano();
-                p1.receberDano(dano2);
-            }
-        }
-
-        if (p1.estaDerrotado()) {
-            p2.ganharExperiencia(50);
-            pontuacao += 50;
-            return p2;
+    // NOVO: mostrar mochila
+    public void mostrarMochila() {
+        System.out.println("\n=== Mochila de " + nome + " ===");
+        if (mochila.isEmpty()) {
+            System.out.println("Nenhum Pokémon capturado.");
         } else {
-            p1.ganharExperiencia(50);
-            pontuacao += 50;
-            return p1;
+            for (Pokemon p : mochila) {
+                System.out.println("- " + p.getNome() + " [Nv " + p.getNivel() + "] Exp: " + p.getExperiencia());
+            }
         }
     }
 
-    // NOVO: computador escolhe célula aleatória
-    public int[] escolherCelula(int max) {
-        Random r = new Random();
-        return new int[]{r.nextInt(max), r.nextInt(max)};
+    // Getters
+    public String getNome() {
+        return nome;
+    }
+
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void adicionarPokemon(Pokemon pokemon) {
+
     }
 }
