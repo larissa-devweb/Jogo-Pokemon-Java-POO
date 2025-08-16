@@ -1,43 +1,23 @@
 package jogopokemon.pokemons;
-//package jogopokemon;
 
-import java.util.Random;
+import jogopokemon.Pokemon;
 
-/**
- * Tipo Água
- * Construtores sobrecarregados (1 arg e 2 args) para casar com usos diferentes.
- * Redução de dano recebido (PDF: “redução de dano em ambientes adversos”).
- */
+// Pokémon Água
 public class Agua extends Pokemon {
-
-    // ✔ construtor básico (selvagem por padrão)
     public Agua(String nome) {
-    super(nome, 30, 5, 1, 0, true, "Água");
+        super(nome, "Agua", 8); // Força padrão 8
     }
 
-    // ✔ construtor opcional usado por loaders que querem definir selvagem/dono
     public Agua(String nome, boolean selvagem) {
-        super(nome,30, 5, 1, 0,  selvagem, "Água");
+        super(nome, "Agua", 8);
+        setSelvagem(selvagem);
     }
 
     @Override
-    public int calcularDano() {
-        // Exemplo do PDF: random(força) * nível + xp
-        int xp = 0;
-        int forca = 0;
-        int nivel = 0;
-        return new Random().nextInt(forca + 1) * nivel + xp;
-    }
-
-    // NOVO: Água → reduz dano recebido (simulação: -20%)
-    @Override
-    public void receberDano(int dano) {
-        super.receberDano((int)(dano * 0.8));
-    }
-
-    @Override
-    public int atacar(Pokemon alvo) {
-        return 0;
+    public int atacar(Pokemon alvo, int turno) {
+        // Pode ter efeito especial ou dano base diferente
+        int dano = getForca() + getNivel();
+        alvo.receberDano(dano);
+        return dano;
     }
 }
-

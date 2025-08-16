@@ -7,7 +7,7 @@ import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
-import jogopokemon.pokemons.Pokemon;
+import jogopokemon.Pokemon;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -73,7 +73,7 @@ public class EscolherPosicoes extends JFrame {
         {
             JButton finalBotao = botao;
             botao.addActionListener(e -> {
-                escolherPokemon(new Eletrico("Pikachu"));
+                escolherPokemon(new Eletrico("Pikachu", false));
                 finalBotao.setEnabled(true);
             });
         }
@@ -167,8 +167,8 @@ public class EscolherPosicoes extends JFrame {
     }
 
     private void abrirJogo() {
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"));
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"));
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", false));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", false));
 
         // Fechar janela atual sem sair do programa
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

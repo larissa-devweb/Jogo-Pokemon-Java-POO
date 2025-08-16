@@ -1,26 +1,22 @@
 package jogopokemon.pokemons;
 
-import java.util.Random;
+import jogopokemon.Pokemon;
 
-/**
- * Tipo Floresta
- * ✔ Regeneração: cura 20% do dano que causar (implementado na Batalha2Pokemons
- *   logo após aplicar o dano, usando hpMax que agora existe em Pokemon).
- */
+// Pokémon Floresta
 public class Floresta extends Pokemon {
-
     public Floresta(String nome) {
-        super(nome, 28, 6, 1, 0, true, "Floresta");
+        super(nome, "Floresta", 7); // Força padrão 7
     }
 
     public Floresta(String nome, boolean selvagem) {
-        super(nome, 28, 6, 1, 0, selvagem, "Floresta");
+        super(nome, "Floresta", 7);
+        setSelvagem(selvagem);
     }
-    // NOVO: Floresta → regenera 10% da energia ao atacar
+
     @Override
-    public int calcularDano() {
-        int dano = super.calcularDano();
-        this.energia += (int)(dano * 0.1);
+    public int atacar(Pokemon alvo, int turno) {
+        int dano = getForca() + getNivel();
+        alvo.receberDano(dano);
         return dano;
     }
 }

@@ -3,7 +3,7 @@ package jogopokemon.janelas;
 import jogopokemon.CapturaSelvagem;
 import jogopokemon.Tabuleiro;
 import jogopokemon.Treinador;
-import jogopokemon.pokemons.Pokemon;
+import jogopokemon.Pokemon;
 import javax.swing.*;
 import java.awt.*;
 

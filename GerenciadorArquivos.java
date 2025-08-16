@@ -1,14 +1,8 @@
 package jogopokemon;
 
 import java.io.*;
-
 import jogopokemon.pokemons.*;
 
-/**
- * ✔ Usa getTipo() (agora existe em Pokemon).
- * ✔ Construtores das espécies aceitam (String nome) e (String, boolean) — aqui usamos o de 1 arg.
- * ✔ Mantido método utilitário criarPokemonPorTipo(...) para o carregamento.
- */
 public class GerenciadorArquivos {
 
     // ======== Mochila ========
@@ -16,7 +10,7 @@ public class GerenciadorArquivos {
         File f = new File("mochila.txt");
         try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
             for (Pokemon p : t.getMochila()) {
-                pw.println(p.getTipo() + ";" + p.getNome() + ";" + p.getNivel() + ";" + p.getXp() + ";" + p.getHp());
+                pw.println(p.getTipo() + ";" + p.getNome() + ";" + p.getNivel() + ";" + p.getExperiencia() + ";" + p.getHp());
             }
             System.out.println("Mochila salva em " + f.getAbsolutePath());
         } catch (IOException e) {
@@ -37,10 +31,12 @@ public class GerenciadorArquivos {
                 if (parts.length >= 2) {
                     String tipo = parts[0];
                     String nome = parts[1];
-                    Pokemon p = criarPokemonPorTipo(tipo, nome); // ✔ usa construtor 1 arg
-                    p.setSelvagem(false);
-                    p.setTreinador(t);
-                    t.adicionarPokemon(p); // ✔ método presente
+                    Pokemon p = criarPokemonPorTipo(tipo, nome);
+                    if (p != null) {
+                        p.setSelvagem(false);
+                        p.setTreinador(t);
+                        t.adicionarPokemon(p);
+                    }
                 }
             }
             System.out.println("Mochila carregada.");
@@ -49,7 +45,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ======== Tabuleiro (exemplo básico) ========
+    // ======== Tabuleiro ========
     public static void salvarTabuleiro(Tabuleiro tab) {
         File f = new File("tabuleiro.txt");
         try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
@@ -85,8 +81,10 @@ public class GerenciadorArquivos {
                     boolean selvagem = "S".equalsIgnoreCase(parts[4]);
 
                     Pokemon p = criarPokemonPorTipo(tipo, nome);
-                    p.setSelvagem(selvagem);
-                    tab.posicionarPokemon(i, j, p,true);
+                    if (p != null) {
+                        p.setSelvagem(selvagem);
+                        tab.posicionarPokemon(i, j, p, p.isSelvagem()); // passa true/false conforme o Pokémon
+                    }
                 }
             }
             System.out.println("Tabuleiro carregado.");
@@ -99,11 +97,15 @@ public class GerenciadorArquivos {
     private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
         switch (tipo.toLowerCase()) {
             case "agua":
-            case "água":      return new Agua(nome);
-            case "terra":     return new Terra(nome);
-            case "floresta":  return new Floresta(nome);
+            case "água":
+                return new Agua(nome, false);
+            case "terra":
+                return new Terra(nome, false);
+            case "floresta":
+                return new Floresta(nome, false);
+            case "elétrico":
             case "eletrico":
-            case "elétrico":  return new Eletrico(nome);
+                return new Eletrico(nome, false);
             default:
                 System.out.println("Tipo desconhecido: " + tipo);
                 return null;

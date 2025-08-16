@@ -2,10 +2,10 @@ package jogopokemon.testes;
 
 import jogopokemon.*;
 import jogopokemon.janelas.Jogo;
-import jogopokemon.pokemons.Pokemon;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,19 +19,22 @@ public class JogoPokemon {
         Treinador treinadorJogador = new Treinador("Ash");
         Jogo jogo = new Jogo(tabuleiro, treinadorJogador);
 
-        int dicasRestantes = 3; // máximo de dicas
+        int dicasRestantes = 3;
         boolean jogoAtivo = true;
 
-        // Posiciona alguns Pokémons selvagens no início
-        tabuleiro.posicionarPokemon(1, 1, new Agua("Squirtle"), true);
-        tabuleiro.posicionarPokemon(2, 3, new Eletrico("Pikachu"), true);
-        tabuleiro.posicionarPokemon(4, 2, new Floresta("Chikorita"), true);
+        // Posiciona Pokémons selvagens em regiões válidas
+        try {
+            tabuleiro.posicionarPokemon(0, 0, new Agua("Squirtle", true), true);
+            tabuleiro.posicionarPokemon(0, 5, new Eletrico("Pikachu", true), true);
+            tabuleiro.posicionarPokemon(5, 2, new Floresta("Chikorita", true), true);
+        } catch (RegiaoInvalidaException e) {
+            System.out.println("Erro ao posicionar Pokémon: " + e.getMessage());
+        }
 
-        // Inicia thread para movimentar Pokémon automaticamente
+        // Inicia thread de movimento automático
         MovimentoAutomatico threadMovimento = new MovimentoAutomatico(tabuleiro, jogo);
         threadMovimento.start();
 
-        // Loop principal do jogo
         while (jogoAtivo) {
             System.out.println("\n=== MENU PRINCIPAL ===");
             System.out.println("1 - Posicionar Pokémon manualmente");
@@ -50,15 +53,23 @@ public class JogoPokemon {
 
             switch (opcao) {
                 case 1:
-                    Pokemon pManual = new Floresta("Bulbasaur");
-                    tabuleiro.posicionarPokemon(3, 2, pManual, true);
-                    System.out.println("Bulbasaur posicionado em [3,2].");
+                    Pokemon pManual = new Floresta("Bulbasaur", false);
+                    try {
+                        tabuleiro.posicionarPokemon(1, 1, pManual, true);
+                        System.out.println("Bulbasaur posicionado em [1,1].");
+                    } catch (RegiaoInvalidaException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
 
                 case 2:
-                    tabuleiro.posicionarPokemon(0, 0, new Agua("Totodile"), true);
-                    tabuleiro.posicionarPokemon(0, 5, new Eletrico("Magnemite"), true);
-                    System.out.println("Pokémons posicionados aleatoriamente.");
+                    try {
+                        tabuleiro.posicionarPokemon(2, 2, new Agua("Totodile", false), true);
+                        tabuleiro.posicionarPokemon(3, 3, new Eletrico("Magnemite", false), true);
+                        System.out.println("Pokémons posicionados aleatoriamente.");
+                    } catch (RegiaoInvalidaException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
 
                 case 3:
@@ -69,14 +80,14 @@ public class JogoPokemon {
                         System.out.println("Escolha um Pokémon para capturar:");
                         for (int i = 0; i < selvagens.size(); i++) {
                             Pokemon p = selvagens.get(i);
-                            int[] pos = tabuleiro.posicionarPokemon(p);
+                            int[] pos = tabuleiro.getPosicao(p);
                             System.out.println(i + " - " + p.getNome() + " (" + p.getTipo() + ") em [" + pos[0] + "," + pos[1] + "]");
                         }
                         System.out.print("Número do Pokémon: ");
                         int escolha = scanner.nextInt();
                         if (escolha >= 0 && escolha < selvagens.size()) {
                             Pokemon escolhido = selvagens.get(escolha);
-                            int[] pos = tabuleiro.posicionarPokemon(escolhido);
+                            int[] pos = tabuleiro.getPosicao(escolhido);
                             CapturaSelvagem.tentarCaptura(escolhido, tabuleiro, pos[0], pos[1], treinadorJogador);
                         } else {
                             System.out.println("Escolha inválida.");
@@ -124,23 +135,13 @@ public class JogoPokemon {
                 case 5:
                     System.out.print("Nome do Pokémon 1: ");
                     String nome1 = scanner.next();
-                    Pokemon p1 = new Agua(nome1);
-                    boolean batalhando = true;
-                    while (batalhando) {
-                        System.out.println("1 - Atacar");
-                        System.out.println("2 - Fugir");
-                        int acao = scanner.nextInt();
-                        if (acao == 1) {
-                            int dano = p1.calcularDano();
-                            System.out.println(p1.getNome() + " causou " + dano + " de dano!");
-                            batalhando = false;
-                        } else if (acao == 2) {
-                            System.out.println(p1.getNome() + " fugiu da batalha!");
-                            batalhando = false;
-                        } else {
-                            System.out.println("Opção inválida.");
-                        }
-                    }
+                    Pokemon p1 = new Agua(nome1, false);
+
+                    System.out.print("Nome do Pokémon 2: ");
+                    String nome2 = scanner.next();
+                    Pokemon p2 = new Eletrico(nome2, false);
+
+                    treinadorJogador.batalhar(p1, p2);
                     break;
 
                 case 6:
@@ -166,10 +167,8 @@ public class JogoPokemon {
 
                 default:
                     System.out.println("Opção inválida.");
-                    break;
             }
 
-            // Mostra tabuleiro após cada ação
             tabuleiro.exibir();
         }
 

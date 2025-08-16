@@ -1,29 +1,26 @@
 package jogopokemon.pokemons;
 
-import java.util.Random;
+import jogopokemon.Pokemon;
 
-/**
- * Tipo Elétrico
- * Chance de paralisar o adversário 1 turno será aplicada na Batalha2Pokemons
- *   (evita acoplamento com o “alvo” dentro de calcularDano()).
- */
+// Pokémon Elétrico
 public class Eletrico extends Pokemon {
-
     public Eletrico(String nome) {
-        super(nome, 25, 7, 1, 0, true, "Elétrico");
+        super(nome, "Eletrico", 10); // Força padrão 10
     }
 
     public Eletrico(String nome, boolean selvagem) {
-        super(nome, 25, 7, 1, 0, selvagem, "Elétrico");
+        super(nome, "Eletrico", 10);
+        setSelvagem(selvagem);
     }
 
-    // NOVO: Elétrico → chance de paralisar adversário
     @Override
-    public int calcularDano() {
-        Random rand = new Random();
-        if (rand.nextInt(100) < 30) {
-            boolean adversarioParalisado = true;
+    public int atacar(Pokemon alvo, int turno) {
+        int dano = getForca() + getNivel();
+        alvo.receberDano(dano);
+        // Chance de paralisar 20% (exemplo)
+        if (Math.random() < 0.2) {
+            alvo.paralisar();
         }
-        return super.calcularDano();
+        return dano;
     }
 }

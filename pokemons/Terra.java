@@ -1,31 +1,22 @@
 package jogopokemon.pokemons;
 
-import java.util.Random;
+import jogopokemon.Pokemon;
 
-/**
- * Tipo Terra
- * ✔ Bônus de “força dobrada em turno ímpar” será tratado na Batalha2Pokemons
- *   (evita dependência cruzada do pacote pokemons para a classe de batalha).
- */
+// Pokémon Terra
 public class Terra extends Pokemon {
-
     public Terra(String nome) {
-        super(nome, 35, 4, 1, 0, true, "Terra");
+        super(nome, "Terra", 9); // Força padrão 9
     }
 
     public Terra(String nome, boolean selvagem) {
-        super(nome, 35, 4, 1, 0, selvagem, "Terra");
+        super(nome, "Terra", 9);
+        setSelvagem(selvagem);
     }
 
-    // NOVO: Terra → dobra a força em turno ímpar
     @Override
-    public int calcularDano() {
-        int turno=0;
-        turno++;
-        int dano = super.calcularDano();
-        if (turno % 2 == 1) {
-            dano *= 2;
-        }
+    public int atacar(Pokemon alvo, int turno) {
+        int dano = getForca() + getNivel();
+        alvo.receberDano(dano);
         return dano;
     }
 }

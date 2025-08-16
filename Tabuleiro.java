@@ -1,9 +1,11 @@
 package jogopokemon;
 
+import jogopokemon.pokemons.Agua;
+import jogopokemon.pokemons.Eletrico;
 import java.util.ArrayList;
 
 public class Tabuleiro {
-    private Pokemon[][] grid;
+    private final Pokemon[][] grid;
     private int tamanho;
 
     public Tabuleiro(int tamanho) {
@@ -11,17 +13,18 @@ public class Tabuleiro {
         this.grid = new Pokemon[tamanho][tamanho];
     }
 
-    // Método existente para posicionar manualmente
-    public void posicionarPokemon(int linha, int coluna, Pokemon p, boolean selvagem) throws RegiaoInvalidaException {
-        if (linha < 0 || linha >= tamanho || coluna < 0 || coluna >= tamanho) {
-            throw new RegiaoInvalidaException("Posição inválida!");
-        }
-        p.setSelvagem(selvagem);
-        grid[linha][coluna] = p;
+    public int getTamanho() {
+        return tamanho;
     }
 
-    // NOVO: retorna posição do Pokémon (para listagem no menu 3)
-    public int[] posicionarPokemon(Pokemon p) {
+    public Pokemon getPokemon(int linha, int coluna) {
+        if (linha < 0 || linha >= tamanho || coluna < 0 || coluna >= tamanho) {
+            return null;
+        }
+        return grid[linha][coluna];
+    }
+
+    public int[] getPosicao(Pokemon p) {
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
                 if (grid[i][j] == p) {
@@ -29,45 +32,99 @@ public class Tabuleiro {
                 }
             }
         }
-        return new int[]{-1, -1};
+        return null;
     }
 
-    // NOVO: retorna pokémon de uma célula
-    public Pokemon getPokemon(int linha, int coluna) {
-        return grid[linha][coluna];
+    public void removerPokemon(int linha, int coluna) {
+        if (linha >= 0 && linha < tamanho && coluna >= 0 && coluna < tamanho) {
+            grid[linha][coluna] = null;
+        }
     }
 
-    // NOVO: lista todos os pokémon selvagens
+    public void posicionarPokemon(int linha, int coluna, Pokemon pokemon, boolean selvagem) throws RegiaoInvalidaException {
+        if (linha < 0 || linha >= tamanho || coluna < 0 || coluna >= tamanho) {
+            throw new IllegalArgumentException("Posição inválida.");
+        }
+
+        int n2 = tamanho / 2;
+        boolean regiaoCorreta;
+        String tipo = pokemon.getTipo();
+
+        if (tipo.equalsIgnoreCase("Agua")) {
+            regiaoCorreta = (linha < n2 && coluna < n2);
+        } else if (tipo.equalsIgnoreCase("Floresta")) {
+            regiaoCorreta = (linha < n2 && coluna >= n2);
+        } else if (tipo.equalsIgnoreCase("Terra")) {
+            regiaoCorreta = (linha >= n2 && coluna < n2);
+        } else if (tipo.equalsIgnoreCase("Eletrico")) {
+            regiaoCorreta = (linha >= n2 && coluna >= n2);
+        } else {
+            regiaoCorreta = true;
+        }
+
+        if (!regiaoCorreta) {
+            throw new RegiaoInvalidaException("Pokémon do tipo " + tipo + " não pode ser colocado nessa região!");
+        }
+
+        pokemon.setSelvagem(selvagem); //  define se é selvagem
+        grid[linha][coluna] = pokemon;
+
+        // Define ambiente adverso se necessário
+        pokemon.setEmAmbienteAdverso(!regiaoCorreta);
+    }
+
     public ArrayList<Pokemon> listarPokemonsSelvagens() {
-        ArrayList<Pokemon> lista = new ArrayList<>();
+        ArrayList<Pokemon> selvagens = new ArrayList<>();
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                if (grid[i][j] != null && grid[i][j].isSelvagem()) {
-                    lista.add(grid[i][j]);
+                Pokemon p = grid[i][j];
+                if (p != null && p.isSelvagem()) {
+                    selvagens.add(p);
                 }
             }
         }
-        return lista;
+        return selvagens;
     }
 
-    // NOVO: imprime o tabuleiro simplificado
     public void exibir() {
-        System.out.println("\n=== TABULEIRO ===");
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                if (grid[i][j] == null) {
-                    System.out.print("[ ] ");
-                } else if (grid[i][j].isSelvagem()) {
-                    System.out.print("[S] "); // Selvagem
+                Pokemon p = grid[i][j];
+                if (p == null) {
+                    System.out.print("[   ]");
                 } else {
-                    System.out.print("[T] "); // Do treinador
+                    System.out.print("[" + p.getNome().charAt(0) + "]");
                 }
             }
             System.out.println();
         }
     }
 
-    public int getTamanho() {
-        return tamanho;
+    // Posicionamento aleatório simplificado (exemplo)
+    public void posicionarPokemonAleatoriamente(Pokemon p) {
+        boolean colocado = false;
+        while (!colocado) {
+            int linha = (int) (Math.random() * tamanho);
+            int coluna = (int) (Math.random() * tamanho);
+            if (grid[linha][coluna] == null) {
+                try {
+                    posicionarPokemon(linha, coluna, p, true);
+                    colocado = true;
+                } catch (RegiaoInvalidaException ignored) {
+                }
+            }
+        }
     }
+    public boolean todosSelvagensCapturados() {
+        for (int i = 0; i < tamanho; i++) {
+            for (int j = 0; j < tamanho; j++) {
+                Pokemon p = getPokemon(i, j);
+                if (p != null && p.isSelvagem()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }

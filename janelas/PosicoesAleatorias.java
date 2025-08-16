@@ -6,7 +6,7 @@ import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
-import jogopokemon.pokemons.Pokemon;
+import jogopokemon.Pokemon;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -53,13 +53,13 @@ public class PosicoesAleatorias extends JFrame {
         add(botao, constraints);
 
         // TODO: Adicionar um na mochila do jogador e outro na do computador
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu"));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu", false));
         tabuleiro.posicionarPokemonAleatoriamente(new Floresta("Bulbasaur", false));
 
         // Selvagens
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Squirtle"));
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck"));
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu"));
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Squirtle", false));
+        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", false));
+        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", false));
 
         atualizarTabuleiro();
 
