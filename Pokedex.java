@@ -1,38 +1,43 @@
 package jogopokemon;
 
 import jogopokemon.pokemons.Pokemon;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-// Classe que armazena as espécies já capturadas
 public class Pokedex {
-    // Conjunto que armazena nomes sem repetição
-    private final Set<String> especiesCapturadas;
+    private List<Pokemon> capturados;
 
-    // Construtor: inicializa o conjunto
     public Pokedex() {
-        especiesCapturadas = new HashSet<>();
+        this.capturados = new ArrayList<>();
     }
 
-    // Adiciona uma espécie capturada
-    public void registrar(Pokemon pokemon) {
-        especiesCapturadas.add(pokemon.getNome());
-    }
-
-    // Mostra todas as espécies capturadas
-    public void mostrar() {
-        if (especiesCapturadas.isEmpty()) {
-            System.out.println("Pokédex vazia.");
-        } else {
-            System.out.println("=== POKÉDEX ===");
-            for (String especie : especiesCapturadas) {
-                System.out.println("- " + especie);
-            }
+    // NOVO: adiciona um Pokémon capturado
+    public void adicionarPokemon(Pokemon p) {
+        if (!capturados.contains(p)) {
+            capturados.add(p);
         }
     }
 
-    // Retorna a quantidade de espécies registradas
-    public int quantidade() {
-        return especiesCapturadas.size();
+    // NOVO: retorna lista formatada dos Pokémon
+    public String listarPokemons() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("📖 Pokédex:\n");
+        if (capturados.isEmpty()) {
+            sb.append("Nenhum Pokémon capturado ainda.\n");
+        } else {
+            for (Pokemon p : capturados) {
+                sb.append("- ").append(p.getNome())
+                        .append(" [").append(p.getTipo()).append("] ")
+                        .append(" | Nível: ").append(p.getNivel())
+                        .append(" | Exp: ").append(p.getExperiencia())
+                        .append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    // NOVO: quantidade de Pokémon registrados
+    public int totalCapturados() {
+        return capturados.size();
     }
 }
