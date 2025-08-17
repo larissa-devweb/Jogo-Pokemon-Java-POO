@@ -27,7 +27,7 @@ public class EscolherPosicoes extends JFrame {
         super("Distribuir Pokémons");
 
         this.jogador = new Treinador("Ash");
-        this.tabuleiro = new Tabuleiro(5);
+        this.tabuleiro = new Tabuleiro(6);
         int tamanho = tabuleiro.getTamanho();
 
         // Painel do tabuleiro
@@ -80,7 +80,7 @@ public class EscolherPosicoes extends JFrame {
         add(painelBotoes, BorderLayout.SOUTH);
         add(painelLateral, BorderLayout.EAST);
 
-        setSize(700, 600);
+        setSize(800, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -179,9 +179,6 @@ public class EscolherPosicoes extends JFrame {
     }
 
     private void abrirJogo() {
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", true));
-
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 

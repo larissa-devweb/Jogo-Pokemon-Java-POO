@@ -3,9 +3,6 @@ package jogopokemon.janelas;
 import jogopokemon.MovimentoAutomatico;
 import jogopokemon.Tabuleiro;
 import jogopokemon.Treinador;
-import jogopokemon.pokemons.Agua;
-import jogopokemon.pokemons.Eletrico;
-import jogopokemon.pokemons.Floresta;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,17 +52,8 @@ public class BoasVindas extends JFrame {
     }
 
     private void abrirJogoAleatorio() {
-        // Cria tabuleiro 5x5 (pode ajustar)
-        Tabuleiro tabuleiro = new Tabuleiro(5);
-
-        // Adiciona Pokémon na mochila do jogador e do computador
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu", false));
-        tabuleiro.posicionarPokemonAleatoriamente(new Floresta("Bulbasaur", false));
-
-        // Selvagens
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Squirtle", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", true));
-        tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", true));
+        // Cria tabuleiro 6x6 (pode ajustar)
+        Tabuleiro tabuleiro = new Tabuleiro(6);
 
         // Fecha a janela atual (sem encerrar o programa)
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

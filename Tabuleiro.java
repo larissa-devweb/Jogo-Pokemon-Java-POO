@@ -2,6 +2,7 @@ package jogopokemon;
 
 import jogopokemon.excecoes.NenhumaPosicaoDisponivelException;
 import jogopokemon.excecoes.RegiaoInvalidaException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,8 +56,10 @@ public class Tabuleiro {
 
         if (!posicaoValida(linha, coluna))
             throw new IllegalArgumentException("Posição fora do tabuleiro.");
+
         if (grid[linha][coluna] != null)
             throw new IllegalArgumentException("Já existe um Pokémon nessa posição.");
+
         if (!regiaoValida(p.getTipo(), linha, coluna))
             throw new RegiaoInvalidaException("Pokémon do tipo " + p.getTipo() + " não pode ser colocado nessa região!");
 
@@ -87,9 +90,11 @@ public class Tabuleiro {
                 }
             }
         }
+
         if (livresValidas.isEmpty()) {
             throw new NenhumaPosicaoDisponivelException("Nenhuma posição disponível para o Pokémon " + p.getNome());
         }
+
         int[] pos = livresValidas.get(rnd.nextInt(livresValidas.size()));
         grid[pos[0]][pos[1]] = p;
         p.setEmAmbienteAdverso(false);
@@ -103,7 +108,7 @@ public class Tabuleiro {
         for (Pokemon p : regiaoFloresta) if (p.isSelvagem()) selvagens.add(p);
         for (Pokemon p : regiaoTerra) if (p.isSelvagem()) selvagens.add(p);
         for (Pokemon p : regiaoEletrico) if (p.isSelvagem()) selvagens.add(p);
-        if (selvagens.isEmpty()) return null;
+        if (selvagens.isEmpty())return null;
         return selvagens.get(rnd.nextInt(selvagens.size()));
     }
 

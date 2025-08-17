@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class Jogo extends JFrame {
-    private final int tamanho = 6; // tamanho do tabuleiro
     private final Tabuleiro tabuleiro;
     private final Treinador jogador;
     private final Treinador computador;
@@ -22,7 +21,7 @@ public class Jogo extends JFrame {
         this.tabuleiro = tabuleiro;
         this.jogador = jogador;
         this.computador = new Treinador("Computador");
-        this.botoes = new JButton[tamanho][tamanho];
+        this.botoes = new JButton[tabuleiro.getTamanho()][tabuleiro.getTamanho()];
         this.status = new JLabel("Sua vez!");
         this.painelPontuacao = new JLabel();
 
@@ -54,6 +53,7 @@ public class Jogo extends JFrame {
         // Selvagens
         Random rnd = new Random();
         String[] tipos = {"agua", "floresta", "terra", "eletrico"};
+
         for (int i = 0; i < 8; i++) {
             String tipo = tipos[rnd.nextInt(tipos.length)];
             Pokemon selvagem = criarPokemon(tipo, tipo + i, true);
@@ -62,12 +62,17 @@ public class Jogo extends JFrame {
     }
 
     private Pokemon criarPokemon(String tipo, String nome, boolean selvagem) {
+        String[] nomesAgua = {"Psyduck", "Magikarp"};
+        String[] nomesEletrico = {"Raichu", "Voltorb"};
+        String[] nomesFloresta = {"Oddish", "Caterpie"};
+        String[] nomesTerra = {"Geodude", "Diglett"};
+
+        Random rnd = new Random();
         return switch (tipo.toLowerCase()) {
-            case "agua" -> new Agua(nome, selvagem);
-            case "floresta" -> new Floresta(nome, selvagem);
-            case "terra" -> new Terra(nome, selvagem);
-            case "eletrico" -> new Eletrico(nome, selvagem);
-            default -> new Agua(nome, selvagem);
+            case "floresta" -> new Floresta(nomesFloresta[rnd.nextInt(nomesFloresta.length)], selvagem);
+            case "terra" -> new Terra(nomesTerra[rnd.nextInt(nomesTerra.length)], selvagem);
+            case "eletrico" -> new Eletrico(nomesEletrico[rnd.nextInt(nomesEletrico.length)], selvagem);
+            default -> new Agua(nomesAgua[rnd.nextInt(nomesAgua.length)], selvagem);
         };
     }
 
@@ -75,9 +80,9 @@ public class Jogo extends JFrame {
         setLayout(new BorderLayout());
 
         // Tabuleiro
-        JPanel panelTabuleiro = new JPanel(new GridLayout(tamanho, tamanho));
-        for (int i = 0; i < tamanho; i++) {
-            for (int j = 0; j < tamanho; j++) {
+        JPanel panelTabuleiro = new JPanel(new GridLayout(tabuleiro.getTamanho(), tabuleiro.getTamanho()));
+        for (int i = 0; i < tabuleiro.getTamanho(); i++) {
+            for (int j = 0; j < tabuleiro.getTamanho(); j++) {
                 JButton btn = new JButton("");
                 final int linha = i;
                 final int coluna = j;
@@ -133,8 +138,8 @@ public class Jogo extends JFrame {
     }
 
     public void atualizarTabuleiro() {
-        for (int i = 0; i < tamanho; i++) {
-            for (int j = 0; j < tamanho; j++) {
+        for (int i = 0; i < tabuleiro.getTamanho(); i++) {
+            for (int j = 0; j < tabuleiro.getTamanho(); j++) {
                 Pokemon p = tabuleiro.getPokemon(i, j);
                 if (p == null) botoes[i][j].setText("");
                 else if (!p.isSelvagem()) botoes[i][j].setText(p.getNome().substring(0, 1));
@@ -154,9 +159,10 @@ public class Jogo extends JFrame {
             Random rnd = new Random();
             while (tabuleiro.temPokemonsSelvagens()) {
                 try { Thread.sleep(4000); } catch (InterruptedException ignored) {}
-                int l = rnd.nextInt(tamanho);
-                int c = rnd.nextInt(tamanho);
+                int l = rnd.nextInt(tabuleiro.getTamanho());
+                int c = rnd.nextInt(tabuleiro.getTamanho());
                 Pokemon p = tabuleiro.getPokemon(l, c);
+
                 if (p != null && p.isSelvagem()) {
                     p.setSelvagem(false);
                     computador.adicionarPokemon(p);

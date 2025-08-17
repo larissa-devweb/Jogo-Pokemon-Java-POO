@@ -63,13 +63,13 @@ public class JogoMain {
 
     // Cria Pokémon pelo tipo
     private Pokemon criarPokemon(String tipo, String nome, boolean selvagem) {
-        switch (tipo.toLowerCase()) {
-            case "agua": return new Agua(nome, selvagem);
-            case "floresta": return new Floresta(nome, selvagem);
-            case "terra": return new Terra(nome, selvagem);
-            case "eletrico": return new Eletrico(nome, selvagem);
-            default: return new Agua(nome, selvagem);
-        }
+        return switch (tipo.toLowerCase()) {
+            case "agua" -> new Agua(nome, selvagem);
+            case "floresta" -> new Floresta(nome, selvagem);
+            case "terra" -> new Terra(nome, selvagem);
+            case "eletrico" -> new Eletrico(nome, selvagem);
+            default -> new Agua(nome, selvagem);
+        };
     }
 
     // Mostra menu e interage com o usuário

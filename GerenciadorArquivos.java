@@ -95,20 +95,15 @@ public class GerenciadorArquivos {
 
     // ===== utilitário =====
     private static Pokemon criarPokemonPorTipo(String tipo, String nome) {
-        switch (tipo.toLowerCase()) {
-            case "agua":
-            case "água":
-                return new Agua(nome, false);
-            case "terra":
-                return new Terra(nome, false);
-            case "floresta":
-                return new Floresta(nome, false);
-            case "elétrico":
-            case "eletrico":
-                return new Eletrico(nome, false);
-            default:
+        return switch (tipo.toLowerCase()) {
+            case "agua", "água" -> new Agua(nome, false);
+            case "terra" -> new Terra(nome, false);
+            case "floresta" -> new Floresta(nome, false);
+            case "elétrico", "eletrico" -> new Eletrico(nome, false);
+            default -> {
                 System.out.println("Tipo desconhecido: " + tipo);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 }
