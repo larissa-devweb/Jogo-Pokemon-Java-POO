@@ -50,7 +50,7 @@ public class Batalha2Pokemons {
         sc.nextLine();
     }
 
-    private static int atacarComTipo(Pokemon atacante, Pokemon alvo, int turno) {
+    public static int atacarComTipo(Pokemon atacante, Pokemon alvo, int turno) {
         int dano = atacante.getForca() + (int)(Math.random() * (atacante.getNivel() + 1));
 
         switch (atacante.getTipo().toLowerCase()) {

@@ -100,7 +100,6 @@ public class EscolherPosicoes extends JFrame {
 
     private void clicarTabuleiro(int linha, int coluna) {
         Pokemon p = tabuleiro.getPokemon(linha, coluna);
-
         if (p != null && p.isSelvagem()) {
             tentarCapturaPokemonSelvagem(p, linha, coluna, jogador);
         } else {
@@ -113,6 +112,7 @@ public class EscolherPosicoes extends JFrame {
             if (!b.getText().equals(pokemon.getNome()))
                 b.setEnabled(false);
         }
+
         pokemonEscolhido = pokemon;
     }
 

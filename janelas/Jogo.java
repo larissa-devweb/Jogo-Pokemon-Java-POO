@@ -14,6 +14,7 @@ public class Jogo extends JFrame {
     private final Treinador computador;
     private final JButton[][] botoes;
     private final JLabel status;
+    private Batalha batalhaEmAndamento;
 
     public Jogo(Tabuleiro tabuleiro, Treinador ash) {
         super("Jogo Pokémon - POO 2025/1");
@@ -87,6 +88,12 @@ public class Jogo extends JFrame {
     }
 
     private void clicarCelula(int linha, int coluna) {
+        if (batalhaEmAndamento != null) {
+            batalhaEmAndamento.setVisible(true);
+            batalhaEmAndamento.toFront();
+            return;
+        }
+
         Pokemon p = tabuleiro.getPokemon(linha, coluna);
         if (p == null) {
             status.setText("Nenhum Pokémon aqui!");
@@ -95,17 +102,15 @@ public class Jogo extends JFrame {
         }
 
         if (p.isSelvagem()) {
-            // Captura Pokémon
+            // Capturar Pokémon
             if (CapturaSelvagem.tentarCaptura(p, tabuleiro, linha, coluna, jogador)) {
                 jogador.adicionarPontuacao(10);
                 status.setText("Você capturou " + p.getNome() + "! +10 pontos");
             } else
                 status.setText(p.getNome() + " escapou!");
         } else {
-            // TODO: Batalha
-            Pokemon meu = jogador.getPokemons().getFirst();
-            //Batalha2Pokemons.iniciarBatalha(meu, p);
-            status.setText("Batalha realizada!");
+            status.setText("Batalha em andamento!");
+            batalhaEmAndamento = new Batalha(jogador.getPokemons().getFirst(), computador.getPokemons().getFirst(), this);
         }
 
         atualizarTabuleiro();
@@ -121,6 +126,12 @@ public class Jogo extends JFrame {
                 else botoes[i][j].setText("?");
             }
         }
+    }
+
+    public void batalhaRealizada() {
+        status.setText("Batalha realizada!");
+        batalhaEmAndamento = null;
+        verificarFimJogo();
     }
 
     private void iniciarMovimentoComputador() {
