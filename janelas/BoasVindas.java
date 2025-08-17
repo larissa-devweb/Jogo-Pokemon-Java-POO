@@ -12,32 +12,30 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 
 public class BoasVindas extends JFrame {
+
     public BoasVindas() {
         super("Pokémon GUI Básico");
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(3,10,3,10);
+        constraints.insets = new Insets(3, 10, 3, 10);
 
         add(new Label("Bem-vindo!", Label.CENTER), constraints);
 
         JButton botao = new JButton("Carregar jogo salvo");
         botao.setPreferredSize(new Dimension(250, 30));
         botao.addActionListener(e -> definirPosicoes());
-
         constraints.gridy = 1;
         add(botao, constraints);
 
         botao = new JButton("Posicionar time Pokémon");
         botao.setPreferredSize(new Dimension(250, 30));
         botao.addActionListener(e -> definirPosicoes());
-
         constraints.gridy = 2;
         add(botao, constraints);
 
         botao = new JButton("Distribuir Pokémons aleatoriamente");
         botao.setPreferredSize(new Dimension(250, 30));
         botao.addActionListener(e -> abrirJogoAleatorio());
-
         constraints.gridy = 3;
         add(botao, constraints);
 
@@ -60,7 +58,7 @@ public class BoasVindas extends JFrame {
         // Cria tabuleiro 5x5 (pode ajustar)
         Tabuleiro tabuleiro = new Tabuleiro(5);
 
-        // TODO: Adicionar um na mochila do jogador e outro na do computador
+        // Adiciona Pokémon na mochila do jogador e do computador
         tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Pikachu", false));
         tabuleiro.posicionarPokemonAleatoriamente(new Floresta("Bulbasaur", false));
 

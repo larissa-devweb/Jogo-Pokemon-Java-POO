@@ -8,7 +8,7 @@ import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
-
+import jogopokemon.CapturaSelvagem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,9 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class EscolherPosicoes extends JFrame {
+
     private final Tabuleiro tabuleiro;
+    private final Treinador jogador; // agora será inicializado no construtor
     private final JButton[][] botoesTabuleiro;
     private final ArrayList<JButton> botoesPokemons;
     private Pokemon pokemonEscolhido;
@@ -24,6 +26,9 @@ public class EscolherPosicoes extends JFrame {
 
     public EscolherPosicoes() {
         super("Distribuir Pokémons");
+
+        // Inicializa o jogador
+        this.jogador = new Treinador("Ash");
 
         // Cria tabuleiro 5x5 (pode ajustar)
         this.tabuleiro = new Tabuleiro(5);
@@ -41,7 +46,7 @@ public class EscolherPosicoes extends JFrame {
                 final int l = linha;
                 final int c = coluna;
 
-                botao.addActionListener(e -> posicionarPokemon(l, c));
+                botao.addActionListener(e -> clicarTabuleiro(l, c));
                 painelGrid.add(botao);
             }
         }
@@ -93,15 +98,21 @@ public class EscolherPosicoes extends JFrame {
         setVisible(true);
     }
 
-    // habilita só o botão "Jogar" e mantém visual
-    // (o clique no grid vai posicionar e depois reabilitar os botões)
+    private void clicarTabuleiro(int linha, int coluna) {
+        Pokemon p = tabuleiro.getPokemon(linha, coluna);
+
+        if (p != null && p.isSelvagem()) {
+            tentarCapturaPokemonSelvagem(p, linha, coluna, jogador);
+        } else {
+            posicionarPokemon(linha, coluna);
+        }
+    }
+
     private void escolherPokemon(Pokemon pokemon) {
-        // desabilita botões de outros pokémons enquanto escolhe (modo simples)
         for (JButton b : botoesPokemons) {
             if (!b.getText().equals(pokemon.getNome()))
                 b.setEnabled(false);
         }
-
         pokemonEscolhido = pokemon;
     }
 
@@ -112,10 +123,8 @@ public class EscolherPosicoes extends JFrame {
                 return;
             }
 
-            // tenta posicionar no tabuleiro (passando true = selvagem/permite)
             tabuleiro.posicionarPokemon(linha, coluna, pokemonEscolhido, true);
 
-            // atualiza estado dos botões: se não for modoDebug, remove a opção
             for (JButton botao : botoesPokemons) {
                 if (!modoDebug)
                     botao.setEnabled(false);
@@ -123,7 +132,6 @@ public class EscolherPosicoes extends JFrame {
                     botao.setEnabled(!pokemonEscolhido.getNome().equals(botao.getText()));
             }
 
-            // remove a opção da lista para não poder posicionar o mesmo duas vezes
             botoesPokemons.removeIf(botao -> pokemonEscolhido.getNome().equals(botao.getText()));
 
         } catch (RegiaoInvalidaException e) {
@@ -132,42 +140,42 @@ public class EscolherPosicoes extends JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao posicionar: " + e.getMessage());
         } finally {
             pokemonEscolhido = null;
-            // reabilita botões (modo debug mantém alguns habilitados acima)
             if (!modoDebug) {
                 for (JButton b : botoesPokemons)
                     b.setEnabled(true);
             }
-
             atualizarTabuleiro();
         }
+    }
+
+    private void tentarCapturaPokemonSelvagem(Pokemon p, int linha, int coluna, Treinador jogador) {
+        boolean capturou = CapturaSelvagem.tentarCaptura(p, tabuleiro, linha, coluna, jogador);
+        if (capturou) {
+            tabuleiro.removerPokemon(linha, coluna);
+            JOptionPane.showMessageDialog(this, "Você capturou " + p.getNome() + " com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, p.getNome() + " escapou!");
+        }
+        atualizarTabuleiro();
     }
 
     public void atualizarTabuleiro() {
         for (int linha = 0; linha < tabuleiro.getTamanho(); linha++) {
             for (int coluna = 0; coluna < tabuleiro.getTamanho(); coluna++) {
                 Pokemon p = tabuleiro.getPokemon(linha, coluna);
-                if (p != null) {
-                    botoesTabuleiro[linha][coluna].setText(p.getNome());
-                } else {
-                    botoesTabuleiro[linha][coluna].setText("Vazio");
-                }
+                botoesTabuleiro[linha][coluna].setText(p != null ? p.getNome() : "Vazio");
             }
         }
     }
 
     private void abrirJogo() {
-        // Posiciona alguns pokémons aleatoriamente usando o helper local
         tabuleiro.posicionarPokemonAleatoriamente(new Agua("Psyduck", true));
         tabuleiro.posicionarPokemonAleatoriamente(new Eletrico("Raichu", true));
 
-        // Fecha a janela atual (sem encerrar o programa)
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
-        // Abre a interface do jogo principal
-        Jogo jogo = new Jogo(tabuleiro, new Treinador("Ash"));
-
-        // Inicia thread de movimento automático (se a classe existir)
+        Jogo jogo = new Jogo(tabuleiro, jogador);
         MovimentoAutomatico movimento = new MovimentoAutomatico(tabuleiro, jogo);
         movimento.start();
     }
