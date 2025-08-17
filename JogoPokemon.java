@@ -89,6 +89,7 @@ public class JogoPokemon {
 
             boolean sairExplorar = false;
             while (!sairExplorar) {
+                // Caso seja Pokémon selvagem
                 if (p.isSelvagem()) {
                     System.out.println("Encontrou Pokémon selvagem: " + p.getNome());
                     System.out.println("1 - Tentar capturar");
@@ -97,7 +98,12 @@ public class JogoPokemon {
                     switch (escolha) {
                         case 1:
                             boolean capturou = CapturaSelvagem.tentarCaptura(p, tabuleiro, linha, coluna, jogador);
-                            if (capturou) tabuleiro.removerPokemon(linha, coluna);
+                            if (capturou) {
+                                tabuleiro.removerPokemon(linha, coluna);
+                                System.out.println("Você capturou " + p.getNome() + " com sucesso!");
+                            } else {
+                                System.out.println(p.getNome() + " escapou!");
+                            }
                             sairExplorar = true;
                             break;
                         case 0:
@@ -107,6 +113,8 @@ public class JogoPokemon {
                             System.out.println("Escolha inválida!");
                     }
                     aguardarEnter(sc);
+
+                    // Caso seja Pokémon de outro treinador
                 } else {
                     System.out.println("Encontrou Pokémon de outro treinador: " + p.getNome());
                     if (jogador.getPokemons().isEmpty()) {
@@ -147,6 +155,7 @@ public class JogoPokemon {
             aguardarEnter(sc);
         }
     }
+
 
     private static void mostrarMochila(Treinador jogador) {
         System.out.println("\n--- Mochila de " + jogador.getNome() + " ---");
