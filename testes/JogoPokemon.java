@@ -1,6 +1,8 @@
-package jogopokemon;
+package jogopokemon.testes;
 
 import java.util.Scanner;
+
+import jogopokemon.*;
 import jogopokemon.pokemons.*;
 
 public class JogoPokemon {
