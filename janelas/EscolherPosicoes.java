@@ -139,10 +139,11 @@ public class EscolherPosicoes extends JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao posicionar: " + e.getMessage());
         } finally {
             pokemonEscolhido = null;
-            if (!modoDebug) {
+            if (modoDebug) {
                 for (JButton b : botoesPokemons)
                     b.setEnabled(true);
             }
+
             atualizarTabuleiro();
         }
     }
