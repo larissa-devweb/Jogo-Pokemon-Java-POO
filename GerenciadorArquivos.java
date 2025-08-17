@@ -9,7 +9,7 @@ public class GerenciadorArquivos {
     public static void salvarMochila(Treinador t) {
         File f = new File("mochila.txt");
         try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
-            for (Pokemon p : t.getMochila()) {
+            for (Pokemon p : t.getPokemons()) {
                 pw.println(p.getTipo() + ";" + p.getNome() + ";" + p.getNivel() + ";" + p.getForca() + ";" + p.getHp());
             }
             System.out.println("Mochila salva em " + f.getAbsolutePath());

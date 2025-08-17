@@ -2,7 +2,6 @@ package jogopokemon.janelas;
 
 import jogopokemon.MovimentoAutomatico;
 import jogopokemon.Pokemon;
-import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.Tabuleiro;
 import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
@@ -16,25 +15,22 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class EscolherPosicoes extends JFrame {
-
     private final Tabuleiro tabuleiro;
-    private final Treinador jogador; // agora será inicializado no construtor
+    private final Treinador jogador;
     private final JButton[][] botoesTabuleiro;
     private final ArrayList<JButton> botoesPokemons;
     private Pokemon pokemonEscolhido;
     private boolean modoDebug;
+    private final JLabel painelPontuacao;
 
     public EscolherPosicoes() {
         super("Distribuir Pokémons");
 
-        // Inicializa o jogador
         this.jogador = new Treinador("Ash");
-
-        // Cria tabuleiro 5x5 (pode ajustar)
         this.tabuleiro = new Tabuleiro(5);
         int tamanho = tabuleiro.getTamanho();
 
-        // Painel do tabuleiro (grade)
+        // Painel do tabuleiro
         JPanel painelGrid = new JPanel(new GridLayout(tamanho, tamanho, 4, 4));
         botoesTabuleiro = new JButton[tamanho][tamanho];
 
@@ -42,19 +38,18 @@ public class EscolherPosicoes extends JFrame {
             for (int coluna = 0; coluna < tamanho; coluna++) {
                 JButton botao = new JButton("Vazio");
                 botoesTabuleiro[linha][coluna] = botao;
-
                 final int l = linha;
                 final int c = coluna;
-
                 botao.addActionListener(e -> clicarTabuleiro(l, c));
                 painelGrid.add(botao);
             }
         }
 
-        // Painel de controle (botões de pokémon e ações)
+        // Painel de controle e Pokémon
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 8));
         botoesPokemons = new ArrayList<>();
 
+        // Botão Debug
         JButton btnDebug = new JButton("Debug");
         btnDebug.addActionListener(e -> {
             modoDebug = !modoDebug;
@@ -62,35 +57,28 @@ public class EscolherPosicoes extends JFrame {
         });
         painelBotoes.add(btnDebug);
 
-        // Botão Pikachu (Elétrico)
-        JButton btnPikachu = new JButton("Pikachu");
-        btnPikachu.addActionListener(e -> escolherPokemon(new Eletrico("Pikachu", false)));
-        botoesPokemons.add(btnPikachu);
-        painelBotoes.add(btnPikachu);
-
-        // Botão Bulbasaur (Floresta)
-        JButton btnBulbasaur = new JButton("Bulbasaur");
-        btnBulbasaur.addActionListener(e -> escolherPokemon(new Floresta("Bulbasaur", false)));
-        botoesPokemons.add(btnBulbasaur);
-        painelBotoes.add(btnBulbasaur);
-
-        // Botão Squirtle (Água)
-        JButton btnSquirtle = new JButton("Squirtle");
-        btnSquirtle.addActionListener(e -> escolherPokemon(new Agua("Squirtle", false)));
-        botoesPokemons.add(btnSquirtle);
-        painelBotoes.add(btnSquirtle);
+        // Botões de Pokémon
+        adicionarBotaoPokemon(painelBotoes, new Eletrico("Pikachu", false));
+        adicionarBotaoPokemon(painelBotoes, new Floresta("Bulbasaur", false));
+        adicionarBotaoPokemon(painelBotoes, new Agua("Squirtle", false));
 
         // Botão Jogar
         JButton btnJogar = new JButton("Jogar");
         btnJogar.addActionListener(e -> abrirJogo());
         painelBotoes.add(btnJogar);
 
+        // Painel lateral com pontuação e Pokédex
+        painelPontuacao = new JLabel();
+        atualizarPainelPontuacao();
+
+        JPanel painelLateral = new JPanel(new BorderLayout());
+        painelLateral.add(painelPontuacao, BorderLayout.NORTH);
+
         // Monta a janela
         setLayout(new BorderLayout(8, 8));
         add(painelGrid, BorderLayout.CENTER);
         add(painelBotoes, BorderLayout.SOUTH);
-
-        atualizarTabuleiro();
+        add(painelLateral, BorderLayout.EAST);
 
         setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,10 +86,17 @@ public class EscolherPosicoes extends JFrame {
         setVisible(true);
     }
 
+    private void adicionarBotaoPokemon(JPanel painel, Pokemon p) {
+        JButton btn = new JButton(p.getNome());
+        btn.addActionListener(e -> escolherPokemon(p));
+        botoesPokemons.add(btn);
+        painel.add(btn);
+    }
+
     private void clicarTabuleiro(int linha, int coluna) {
         Pokemon p = tabuleiro.getPokemon(linha, coluna);
         if (p != null && p.isSelvagem()) {
-            tentarCapturaPokemonSelvagem(p, linha, coluna, jogador);
+            tentarCapturaPokemonSelvagem(p, linha, coluna);
         } else {
             posicionarPokemon(linha, coluna);
         }
@@ -134,8 +129,12 @@ public class EscolherPosicoes extends JFrame {
 
             botoesPokemons.removeIf(botao -> pokemonEscolhido.getNome().equals(botao.getText()));
 
-        } catch (RegiaoInvalidaException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            // Adiciona Pokémon à Pokédex e pontuação
+            jogador.adicionarPokemon(pokemonEscolhido);
+            jogador.getPokedex().adicionarPokemon(pokemonEscolhido);
+            jogador.adicionarPontuacao(10);
+            atualizarPainelPontuacao();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao posicionar: " + e.getMessage());
         } finally {
@@ -148,14 +147,18 @@ public class EscolherPosicoes extends JFrame {
         }
     }
 
-    private void tentarCapturaPokemonSelvagem(Pokemon p, int linha, int coluna, Treinador jogador) {
+    private void tentarCapturaPokemonSelvagem(Pokemon p, int linha, int coluna) {
         boolean capturou = CapturaSelvagem.tentarCaptura(p, tabuleiro, linha, coluna, jogador);
         if (capturou) {
             tabuleiro.removerPokemon(linha, coluna);
-            JOptionPane.showMessageDialog(this, "Você capturou " + p.getNome() + " com sucesso!");
+            jogador.adicionarPontuacao(10);
+            jogador.getPokedex().adicionarPokemon(p);
+            JOptionPane.showMessageDialog(this, "Você capturou " + p.getNome() + "!");
         } else {
             JOptionPane.showMessageDialog(this, p.getNome() + " escapou!");
         }
+
+        atualizarPainelPontuacao();
         atualizarTabuleiro();
     }
 
@@ -166,6 +169,12 @@ public class EscolherPosicoes extends JFrame {
                 botoesTabuleiro[linha][coluna].setText(p != null ? p.getNome() : "Vazio");
             }
         }
+    }
+
+    private void atualizarPainelPontuacao() {
+        String mestre = (jogador.getPokedex().totalCapturados() >= 8) ? " - MESTRE POKÉMON!" : "";
+        painelPontuacao.setText("<html>Pontuação: " + jogador.getPontuacao() +
+                "<br>Pokédex: " + jogador.getPokedex().totalCapturados() + "/8" + mestre + "</html>");
     }
 
     private void abrirJogo() {

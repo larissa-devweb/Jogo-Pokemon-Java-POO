@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pokedex {
-    private List<Pokemon> capturados;
+    private final List<Pokemon> capturados;
 
     public Pokedex() {
         this.capturados = new ArrayList<>();
@@ -21,6 +21,7 @@ public class Pokedex {
     public String listarPokemons() {
         StringBuilder sb = new StringBuilder();
         sb.append("📖 Pokédex:\n");
+
         if (capturados.isEmpty()) {
             sb.append("Nenhum Pokémon capturado ainda.\n");
         } else {
@@ -32,6 +33,7 @@ public class Pokedex {
                         .append("\n");
             }
         }
+
         return sb.toString();
     }
 

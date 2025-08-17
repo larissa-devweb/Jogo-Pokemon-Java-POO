@@ -95,7 +95,7 @@ public class JogoMain {
                     tabuleiro.exibir();
                     break;
                 case 4:
-                    jogador.mostrarTime();
+                    System.out.println(jogador.getPokedex().listarPokemons());
                     break;
                 case 0:
                     System.out.println("Saindo...");

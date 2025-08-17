@@ -1,75 +1,42 @@
 package jogopokemon;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Treinador {
-    private String nome;
-    private ArrayList<Pokemon> pokemons;
+    private final String nome;
+    private final List<Pokemon> pokemons;
     private int pontuacao;
-    private Pokedex pokedex;
-    private int linha, coluna;
+    private final Pokedex pokedex;
 
     public Treinador(String nome) {
         this.nome = nome;
         this.pokemons = new ArrayList<>();
         this.pontuacao = 0;
-        this.linha = 0;
-        this.coluna = 0;
+        this.pokedex = new Pokedex();
     }
 
-    // Retorna o nome do treinador
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public List<Pokemon> getPokemons() { return pokemons; }
+    public int getPontuacao() { return pontuacao; }
+    public Pokedex getPokedex() { return pokedex; }
 
-    // Retorna a lista de Pokémons do treinador
-    public ArrayList<Pokemon> getPokemons() {
-        return pokemons;
-    }
-
-    // Adiciona um Pokémon ao time
     public void adicionarPokemon(Pokemon p) {
         pokemons.add(p);
-        p.setTreinador(this); // associa o Pokémon a este treinador
+        pontuacao += 10; // cada captura dá 10 pontos
+        pokedex.adicionarPokemon(p);
+    }
+
+    public void removerPokemon(Pokemon p) {
+        pokemons.remove(p);
+    }
+
+    public void mostrarPontuacao() {
+        System.out.println(nome + " tem " + pontuacao + " pontos.");
     }
 
     // Adiciona pontos à pontuação do treinador
     public void adicionarPontuacao(int pts) {
         pontuacao += pts;
-    }
-
-    // Retorna a pontuação atual
-    public int getPontuacao() {
-        return pontuacao;
-    }
-
-    // Posição do treinador no tabuleiro
-    public int getLinha() {
-        return linha;
-    }
-
-    public int getColuna() {
-        return coluna;
-    }
-
-    public void setLinha(int l) {
-        linha = l;
-    }
-
-    public void setColuna(int c) {
-        coluna = c;
-    }
-
-    // Retorna os Pokémons como um array, representando a “mochila” do treinador
-    public Pokemon[] getMochila() {
-        return pokemons.toArray(new Pokemon[0]);
-    }
-
-    public Pokedex getPokedex() {
-        return pokedex;
-    }
-
-    public void mostrarTime() {
-
     }
 }

@@ -14,22 +14,25 @@ public class Jogo extends JFrame {
     private final Treinador computador;
     private final JButton[][] botoes;
     private final JLabel status;
+    private final JLabel painelPontuacao;
     private Batalha batalhaEmAndamento;
 
-    public Jogo(Tabuleiro tabuleiro, Treinador ash) {
+    public Jogo(Tabuleiro tabuleiro, Treinador jogador) {
         super("Jogo Pokémon - POO 2025/1");
-        this.tabuleiro = new Tabuleiro(tamanho);
-        this.jogador = new Treinador("Ash");
+        this.tabuleiro = tabuleiro;
+        this.jogador = jogador;
         this.computador = new Treinador("Computador");
         this.botoes = new JButton[tamanho][tamanho];
         this.status = new JLabel("Sua vez!");
+        this.painelPontuacao = new JLabel();
 
         inicializarPokemons();
         inicializarGUI();
         iniciarMovimentoComputador();
+        atualizarPainelPontuacao();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 650);
+        setSize(800, 650);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -38,6 +41,7 @@ public class Jogo extends JFrame {
         // Pokémon inicial do jogador
         Pokemon p1 = new Agua("Squirtle", false);
         jogador.adicionarPokemon(p1);
+        jogador.getPokedex().adicionarPokemon(p1);
         tabuleiro.posicionarPokemonAleatoriamente(p1);
         p1.setTreinador(jogador);
 
@@ -57,7 +61,6 @@ public class Jogo extends JFrame {
         }
     }
 
-    // Cria Pokémon pelo tipo
     private Pokemon criarPokemon(String tipo, String nome, boolean selvagem) {
         return switch (tipo.toLowerCase()) {
             case "agua" -> new Agua(nome, selvagem);
@@ -70,6 +73,8 @@ public class Jogo extends JFrame {
 
     private void inicializarGUI() {
         setLayout(new BorderLayout());
+
+        // Tabuleiro
         JPanel panelTabuleiro = new JPanel(new GridLayout(tamanho, tamanho));
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
@@ -82,8 +87,14 @@ public class Jogo extends JFrame {
             }
         }
 
+        // Painel lateral de pontuação e status
+        JPanel painelLateral = new JPanel(new GridLayout(3, 1));
+        painelLateral.add(status);
+        painelLateral.add(painelPontuacao);
+
         add(panelTabuleiro, BorderLayout.CENTER);
-        add(status, BorderLayout.SOUTH);
+        add(painelLateral, BorderLayout.EAST);
+
         atualizarTabuleiro();
     }
 
@@ -105,15 +116,19 @@ public class Jogo extends JFrame {
             // Capturar Pokémon
             if (CapturaSelvagem.tentarCaptura(p, tabuleiro, linha, coluna, jogador)) {
                 jogador.adicionarPontuacao(10);
+                jogador.getPokedex().adicionarPokemon(p);
+                tabuleiro.removerPokemon(linha, coluna);
                 status.setText("Você capturou " + p.getNome() + "! +10 pontos");
-            } else
+            } else {
                 status.setText(p.getNome() + " escapou!");
+            }
         } else {
             status.setText("Batalha em andamento!");
             batalhaEmAndamento = new Batalha(jogador.getPokemons().getFirst(), computador.getPokemons().getFirst(), this);
         }
 
         atualizarTabuleiro();
+        atualizarPainelPontuacao();
         verificarFimJogo();
     }
 
@@ -122,16 +137,16 @@ public class Jogo extends JFrame {
             for (int j = 0; j < tamanho; j++) {
                 Pokemon p = tabuleiro.getPokemon(i, j);
                 if (p == null) botoes[i][j].setText("");
-                else if (!p.isSelvagem()) botoes[i][j].setText(p.getNome().substring(0,1));
+                else if (!p.isSelvagem()) botoes[i][j].setText(p.getNome().substring(0, 1));
                 else botoes[i][j].setText("?");
             }
         }
     }
 
-    public void batalhaRealizada() {
-        status.setText("Batalha realizada!");
-        batalhaEmAndamento = null;
-        verificarFimJogo();
+    private void atualizarPainelPontuacao() {
+        String mestre = (jogador.getPokedex().totalCapturados() >= 8) ? " - MESTRE POKÉMON!" : "";
+        painelPontuacao.setText("<html>Pontuação: " + jogador.getPontuacao() +
+                "<br>Pokédex: " + jogador.getPokedex().totalCapturados() + "/8" + mestre + "</html>");
     }
 
     private void iniciarMovimentoComputador() {
@@ -157,5 +172,12 @@ public class Jogo extends JFrame {
             String vencedor = (jogador.getPontuacao() >= computador.getPontuacao()) ? jogador.getNome() : computador.getNome();
             JOptionPane.showMessageDialog(this, "Fim de jogo! Vencedor: " + vencedor);
         }
+    }
+
+    public void batalhaRealizada() {
+        status.setText("Batalha realizada!");
+        batalhaEmAndamento = null;
+        atualizarPainelPontuacao();
+        verificarFimJogo();
     }
 }
