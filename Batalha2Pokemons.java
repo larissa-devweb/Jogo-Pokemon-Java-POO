@@ -1,65 +1,88 @@
 package jogopokemon;
 
-import java.util.Random;
+import java.util.Scanner;
 
 public class Batalha2Pokemons {
 
-    public static void iniciarBatalha(Pokemon p1, Pokemon p2) {
-        System.out.println(p1.getNome() + " (Treinador: " + nomeTreinador(p1) + ") VS "
-                + p2.getNome() + " (Treinador: " + nomeTreinador(p2) + ")");
+    public static void iniciarBatalha(Pokemon meuPokemon, Pokemon inimigo, Scanner sc) {
+        System.out.println("\n=== BATALHA INICIADA ===");
+        System.out.println(meuPokemon.getNome() + " VS " + inimigo.getNome() + "\n");
 
         int turno = 1;
-        Random rnd = new Random();
 
-        while (p1.getHp() > 0 && p2.getHp() > 0) {
+        while (meuPokemon.getHp() > 0 && inimigo.getHp() > 0) {
+            System.out.println("=== Turno " + turno + " ===");
+            System.out.println(meuPokemon.getNome() + " HP: " + meuPokemon.getHp());
+            System.out.println(inimigo.getNome() + " HP: " + inimigo.getHp() + "\n");
 
-            // TURNO P1
-            if (p1.isParalisado()) {
-                System.out.println(p1.getNome() + " está paralisado e perde o turno.");
-                p1.paralisar();
-            } else {
-                int dano = p1.atacar(p2, turno);
-                System.out.println(p1.getNome() + " causou " + dano + ". "
-                        + p2.getNome() + " ficou com " + p2.getHp() + " HP.");
-            }
+            // Turno do jogador
+            System.out.println("Seu turno! Pressione ENTER para atacar...");
+            aguardarEnter(sc);
+            int dano = atacarComTipo(meuPokemon, inimigo, turno);
+            System.out.println(meuPokemon.getNome() + " causou " + dano + " de dano em " + inimigo.getNome() + "!\n");
 
-            if (p2.getHp() == 0) {
-                System.out.println(p2.getNome() + " foi nocauteado!");
-                darRecompensaVitoria(p1);
+            if (inimigo.getHp() <= 0) {
+                System.out.println(inimigo.getNome() + " foi derrotado!");
                 break;
             }
 
-            turno++;
+            // Turno do inimigo
+            System.out.println("Turno do inimigo! Pressione ENTER para continuar...");
+            aguardarEnter(sc);
+            int danoInimigo = atacarComTipo(inimigo, meuPokemon, turno);
+            System.out.println(inimigo.getNome() + " causou " + danoInimigo + " de dano em " + meuPokemon.getNome() + "!\n");
 
-            // TURNO P2
-            if (p2.isParalisado()) {
-                System.out.println(p2.getNome() + " está paralisado e perde o turno.");
-                p2.paralisar();
-            } else {
-                int dano = p2.atacar(p1, turno);
-                System.out.println(p2.getNome() + " causou " + dano + ". "
-                        + p1.getNome() + " ficou com " + p1.getHp() + " HP.");
-            }
-
-            if (p1.getHp() == 0) {
-                System.out.println(p1.getNome() + " foi nocauteado!");
-                darRecompensaVitoria(p2);
+            if (meuPokemon.getHp() <= 0) {
+                System.out.println(meuPokemon.getNome() + " foi derrotado!");
                 break;
             }
 
             turno++;
         }
+
+        System.out.println("\n=== BATALHA ENCERRADA ===");
     }
 
-    private static String nomeTreinador(Pokemon p) {
-        return (p.getTreinador() != null) ? p.getTreinador().getNome() : "Selvagem";
+    // -------------------- MÉTODOS AUXILIARES --------------------
+
+    private static void aguardarEnter(Scanner sc) {
+        System.out.println("Pressione ENTER para continuar...");
+        sc.nextLine();
     }
 
-    private static void darRecompensaVitoria(Pokemon vencedor) {
-        vencedor.aumentarExperiencia(10);
-        if (vencedor.getTreinador() != null) {
-            vencedor.getTreinador().adicionarPontuacao(10);
+    private static int atacarComTipo(Pokemon atacante, Pokemon alvo, int turno) {
+        int dano = atacante.getForca() + (int)(Math.random() * (atacante.getNivel() + 1));
+
+        switch (atacante.getTipo().toLowerCase()) {
+            case "agua":
+                if (alvo.getTipo().equalsIgnoreCase("terra")) dano *= 1.5;
+                if (alvo.getTipo().equalsIgnoreCase("eletrico")) dano *= 0.5;
+                break;
+            case "terra":
+                if (alvo.getTipo().equalsIgnoreCase("eletrico")) dano *= 1.5;
+                if (alvo.getTipo().equalsIgnoreCase("agua")) dano *= 0.5;
+                // dano dobrado em turno ímpar
+                if (turno % 2 == 1) dano *= 2;
+                break;
+            case "eletrico":
+                if (alvo.getTipo().equalsIgnoreCase("agua")) dano *= 1.5;
+                if (alvo.getTipo().equalsIgnoreCase("terra")) dano *= 0.5;
+                // 30% chance de paralisar
+                if (Math.random() < 0.3) {
+                    alvo.paralisar();
+                    System.out.println(alvo.getNome() + " foi paralisado!");
+                }
+                break;
+            case "floresta":
+                if (alvo.getTipo().equalsIgnoreCase("agua")) dano *= 1.5;
+                // Regeneração parcial: 20% do dano causado
+                int regen = (int)(dano * 0.2);
+                atacante.curar(regen);
+                System.out.println(atacante.getNome() + " recuperou " + regen + " de HP!");
+                break;
         }
-        System.out.println(vencedor.getNome() + " recebeu 10 XP.");
+
+        alvo.receberDano(dano);
+        return dano;
     }
 }

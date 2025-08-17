@@ -12,10 +12,6 @@ public abstract class Pokemon {
     private Treinador treinador;
     private boolean paralisado;
 
-    public Pokemon(String nome, String tipo, boolean selvagem) {
-        this(nome, tipo, 100, 10);
-    }
-
     public Pokemon(String nome, String tipo, int hp, int forca) {
         this.nome = nome;
         this.tipo = tipo;
@@ -23,61 +19,86 @@ public abstract class Pokemon {
         this.forca = forca;
         this.nivel = 1;
         this.experiencia = 0;
-        this.selvagem = selvagem;
+        this.selvagem = true;
         this.emAmbienteAdverso = false;
-        this.treinador = null;
         this.paralisado = false;
+        this.treinador = null;
     }
 
-    // Getters e setters
+    // GETTERS e SETTERS
     public String getNome() { return nome; }
     public String getTipo() { return tipo; }
     public int getForca() { return forca; }
     public int getNivel() { return nivel; }
     public int getHp() { return hp; }
-    public int getExperiencia() { return experiencia; }
+    public void setHp(int hp) { this.hp = Math.max(hp, 0); }
+    public void setForca(int forca) { this.forca = forca; }
+    public void setNivel(int nivel) { this.nivel = nivel; }
+
     public boolean isSelvagem() { return selvagem; }
+    public void setSelvagem(boolean selvagem) { this.selvagem = selvagem; }
+
     public boolean isEmAmbienteAdverso() { return emAmbienteAdverso; }
-    public boolean isParalisado() { return paralisado; }
+    public void setEmAmbienteAdverso(boolean valor) { this.emAmbienteAdverso = valor; }
+
     public Treinador getTreinador() { return treinador; }
+    public void setTreinador(Treinador treinador) { this.treinador = treinador; }
 
-    public void setHp(int hp) { this.hp = hp; }
-    public void setSelvagem(boolean b) { this.selvagem = b; }
-    public void setEmAmbienteAdverso(boolean b) { this.emAmbienteAdverso = b; }
-    public void setTreinador(Treinador t) { this.treinador = t; }
+    public boolean isParalisado() { return paralisado; }
+    public void paralisar() { this.paralisado = !this.paralisado; } // alterna
 
-    // Atualiza experiência e sobe de nível a cada 20 XP
+    public void receberDano(int dano) {
+        setHp(hp - dano);
+    }
+
     public void aumentarExperiencia(int xp) {
-        this.experiencia += xp;
-        if (this.experiencia >= this.nivel * 20) {
-            this.nivel++;
-            System.out.println(this.nome + " subiu para o nível " + this.nivel + "!");
+        experiencia += xp;
+        if (experiencia >= 10) {
+            nivel++;
+            experiencia = 0;
         }
     }
 
-    public void receberDano(int dano) {
-        hp -= dano;
-        if (hp < 0) hp = 0;
+    // --- MÉTODOS DE ATAQUE ---
+    public int atacar(Pokemon alvo, int turno) {
+        int danoBase = getForca() + (int)(Math.random() * (getNivel() + 1));
+        double multiplicador = calcularMultiplicador(this.getTipo(), alvo.getTipo());
+        int danoFinal = (int) Math.round(danoBase * multiplicador);
+
+        // aplica dano no alvo
+        alvo.receberDano(danoFinal);
+
+        // penalidade se em ambiente adverso
+        if (isEmAmbienteAdverso()) {
+            int penalidade = (int)Math.round(danoFinal * 0.10);
+            danoFinal -= penalidade;
+        }
+
+        return danoFinal;
     }
 
-    public void paralisar() {
-        paralisado = true;
+    private double calcularMultiplicador(String meuTipo, String tipoAlvo) {
+        switch (meuTipo.toLowerCase()) {
+            case "agua":
+                if (tipoAlvo.equalsIgnoreCase("terra")) return 1.5;
+                if (tipoAlvo.equalsIgnoreCase("eletrico")) return 0.5;
+                break;
+            case "terra":
+                if (tipoAlvo.equalsIgnoreCase("eletrico")) return 1.5;
+                if (tipoAlvo.equalsIgnoreCase("agua")) return 0.5;
+                break;
+            case "eletrico":
+                if (tipoAlvo.equalsIgnoreCase("agua")) return 1.5;
+                if (tipoAlvo.equalsIgnoreCase("terra")) return 0.5;
+                break;
+            case "floresta":
+                if (tipoAlvo.equalsIgnoreCase("agua")) return 1.5;
+                break;
+        }
+        return 1.0;
     }
 
-    public void recuperarParalisia() {
-        paralisado = false;
-    }
-
+    // Métodos abstratos que subclasses devem implementar
     public abstract int atacar(Pokemon alvo);
-
-    // Método de ataque abstrato recebe turno
-    public abstract int atacar(Pokemon alvo, int turno);
-
-    public void curar(int regen) {
-        if (regen < 0) return; // não permitir cura negativa
-        hp += regen;
-        if (hp > 100) hp = 100; // assume que 100 é o HP máximo
-        System.out.println(nome + " recuperou " + regen + " de HP. HP atual: " + hp);
-    }
-
+    public abstract void curar(int regen);
 }

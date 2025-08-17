@@ -1,45 +1,65 @@
 package jogopokemon;
 
-import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.janelas.Jogo;
 
+import java.util.Random;
+
+/**
+ * Thread responsável por movimentar automaticamente Pokémons selvagens.
+ */
 public class MovimentoAutomatico extends Thread {
     private final Tabuleiro tabuleiro;
-    private final Jogo gui; // referência GUI opcional
+    private final Random random = new Random();
 
-    public MovimentoAutomatico(Tabuleiro tabuleiro, Jogo gui) {
+    public MovimentoAutomatico(Tabuleiro tabuleiro, Jogo jogo) {
         this.tabuleiro = tabuleiro;
-        this.gui = gui;
     }
 
     @Override
     public void run() {
-        while (tabuleiro.temPokemonsSelvagens()) { // corrige aqui
+        while (true) {
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException ignored) {}
+                Thread.sleep(3000); // espera 3 segundos
 
-            int linha = (int)(Math.random() * tabuleiro.getTamanho());
-            int coluna = (int)(Math.random() * tabuleiro.getTamanho());
-            Pokemon p = tabuleiro.getPokemon(linha, coluna);
+                Pokemon selvagem = tabuleiro.getPokemonSelvagemAleatorio();
+                if (selvagem != null) {
+                    moverPokemon(selvagem);
 
-            if (p != null && p.isSelvagem()) {
-                int novaLinha = linha + (int)(Math.random() * 3) - 1;
-                int novaColuna = coluna + (int)(Math.random() * 3) - 1;
-
-                if (novaLinha >= 0 && novaLinha < tabuleiro.getTamanho() &&
-                        novaColuna >= 0 && novaColuna < tabuleiro.getTamanho() &&
-                        tabuleiro.getPokemon(novaLinha, novaColuna) == null) {
-
-                    tabuleiro.removerPokemon(linha, coluna);
-
-                    try {
-                        tabuleiro.posicionarPokemon(novaLinha, novaColuna, p, false);
-                    } catch (RegiaoInvalidaException ignored) {}
-
-                    if (gui != null) gui.atualizarTabuleiro();
+                    // Mostra o tabuleiro no console após movimento
+                    System.out.println("\n[Movimento automático]");
+                    tabuleiro.exibir();
                 }
+
+            } catch (InterruptedException e) {
+                System.out.println("Movimento automático interrompido.");
+                break;
             }
+        }
+    }
+
+    private void moverPokemon(Pokemon pokemon) {
+        int[] pos = tabuleiro.localizar(pokemon);
+        if (pos == null) return;
+        int linha = pos[0];
+        int coluna = pos[1];
+
+        int direcao = random.nextInt(4); // 0=cima,1=baixo,2=esq,3=dir
+        int novaLinha = linha;
+        int novaColuna = coluna;
+
+        switch (direcao) {
+            case 0 -> novaLinha--;
+            case 1 -> novaLinha++;
+            case 2 -> novaColuna--;
+            case 3 -> novaColuna++;
+        }
+
+        if (tabuleiro.posicaoValida(novaLinha, novaColuna) &&
+                tabuleiro.estaLivre(novaLinha, novaColuna) &&
+                tabuleiro.podeFicar(pokemon, novaLinha, novaColuna)) {
+
+            tabuleiro.moverPokemon(pokemon, novaLinha, novaColuna);
+            System.out.println(pokemon.getNome() + " se moveu para (" + novaLinha + "," + novaColuna + ")");
         }
     }
 }

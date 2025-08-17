@@ -33,6 +33,11 @@ public class Eletrico extends Pokemon {
     }
 
     @Override
+    public void curar(int regen) {
+
+    }
+
+    @Override
     public int atacar(Pokemon alvo, int turno) {
         return 0;
     }

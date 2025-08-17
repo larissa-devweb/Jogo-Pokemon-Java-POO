@@ -1,13 +1,14 @@
 package jogopokemon.janelas;
 
 import jogopokemon.MovimentoAutomatico;
+import jogopokemon.Pokemon;
 import jogopokemon.excecoes.RegiaoInvalidaException;
 import jogopokemon.Tabuleiro;
 import jogopokemon.Treinador;
 import jogopokemon.pokemons.Agua;
 import jogopokemon.pokemons.Eletrico;
 import jogopokemon.pokemons.Floresta;
-import jogopokemon.Pokemon;
+
 
 import javax.swing.*;
 import java.awt.*;

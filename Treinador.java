@@ -68,4 +68,8 @@ public class Treinador {
     public Pokedex getPokedex() {
         return pokedex;
     }
+
+    public void mostrarTime() {
+
+    }
 }

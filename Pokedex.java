@@ -28,7 +28,7 @@ public class Pokedex {
                 sb.append("- ").append(p.getNome())
                         .append(" [").append(p.getTipo()).append("] ")
                         .append(" | Nível: ").append(p.getNivel())
-                        .append(" | Exp: ").append(p.getExperiencia())
+                        .append(" | Exp: ").append(p.getForca())
                         .append("\n");
             }
         }

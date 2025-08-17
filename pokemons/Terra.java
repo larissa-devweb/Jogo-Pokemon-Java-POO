@@ -31,6 +31,11 @@ public class Terra extends Pokemon {
     }
 
     @Override
+    public void curar(int regen) {
+
+    }
+
+    @Override
     public int atacar(Pokemon alvo, int turno) {
         return 0;
     }
