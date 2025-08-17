@@ -2,10 +2,10 @@ package jogopokemon;
 
 import java.util.Random;
 
-
 /**
  * Captura simples:
  * ✔ Ao capturar, move para mochila/time do treinador e marca como não-selvagem.
+ * ✔ Remove o Pokémon do tabuleiro.
  */
 public class CapturaSelvagem {
 
@@ -14,10 +14,13 @@ public class CapturaSelvagem {
         double chance = new Random().nextDouble();
 
         if (chance < 0.5) { // capturou
-            treinador.adicionarPokemon(pokemon); // ✔ método agora existe
+            treinador.adicionarPokemon(pokemon); // adiciona ao time/mochila
             pokemon.setSelvagem(false);
             pokemon.setTreinador(treinador);
-            tabuleiro.getPokemon(linha, coluna);
+
+            // remove do tabuleiro
+            tabuleiro.removerPokemon(linha, coluna);
+
             System.out.println(pokemon.getNome() + " foi capturado!");
             return true;
         } else {

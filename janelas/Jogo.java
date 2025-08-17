@@ -107,7 +107,7 @@ public class Jogo {
 
     // Procura Pokémon selvagem aleatório
     private void procurarPokemon() {
-        Pokemon p = tabuleiro.getPokemonSelvagemAleatorio();
+        Pokemon p = tabuleiro.pegarPokemonSelvagemAleatorio();
         if (p != null) {
             int[] pos = tabuleiro.localizar(p);
             System.out.println("Você encontrou um Pokémon selvagem: " + p.getNome()

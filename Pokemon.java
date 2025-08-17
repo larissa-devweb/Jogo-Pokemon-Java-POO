@@ -25,7 +25,7 @@ public abstract class Pokemon {
         this.treinador = null;
     }
 
-    // GETTERS e SETTERS
+    // -------- GETTERS e SETTERS --------
     public String getNome() { return nome; }
     public String getTipo() { return tipo; }
     public int getForca() { return forca; }
@@ -45,8 +45,9 @@ public abstract class Pokemon {
     public void setTreinador(Treinador treinador) { this.treinador = treinador; }
 
     public boolean isParalisado() { return paralisado; }
-    public void paralisar() { this.paralisado = !this.paralisado; } // alterna
+    public void paralisar() { this.paralisado = !this.paralisado; } // alterna estado
 
+    // -------- MÉTODOS DE COMBATE --------
     public void receberDano(int dano) {
         setHp(hp - dano);
     }
@@ -59,7 +60,9 @@ public abstract class Pokemon {
         }
     }
 
-    // --- MÉTODOS DE ATAQUE ---
+    /**
+     * Ataque padrão com base em força + nível + multiplicadores de tipo
+     */
     public int atacar(Pokemon alvo, int turno) {
         int danoBase = getForca() + (int)(Math.random() * (getNivel() + 1));
         double multiplicador = calcularMultiplicador(this.getTipo(), alvo.getTipo());
@@ -98,7 +101,8 @@ public abstract class Pokemon {
         return 1.0;
     }
 
-    // Métodos abstratos que subclasses devem implementar
+    // -------- MÉTODOS ABSTRATOS --------
+    // cada tipo de Pokémon implementa sua versão de ataque e cura
     public abstract int atacar(Pokemon alvo);
     public abstract void curar(int regen);
 }

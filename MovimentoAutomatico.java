@@ -21,7 +21,7 @@ public class MovimentoAutomatico extends Thread {
             try {
                 Thread.sleep(3000); // espera 3 segundos
 
-                Pokemon selvagem = tabuleiro.getPokemonSelvagemAleatorio();
+                Pokemon selvagem = tabuleiro.pegarPokemonSelvagemAleatorio();
                 if (selvagem != null) {
                     moverPokemon(selvagem);
 
